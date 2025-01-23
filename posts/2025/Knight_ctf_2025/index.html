@@ -59,7 +59,7 @@
         <div class=content>
             <article class=post>
                 <h1 class=post-title><a href=index.html>KNIGHT CTF 2025 Writeup</a></h1>
-                <div class=post-meta><time class=post-date>2024-11-17</time></div>
+                <div class=post-meta><time class=post-date>2025-01-20</time></div>
                 <div class=table-of-contents>
                     <h2>Table of Contents</h2>
                     <nav id=TableOfContents>
@@ -68,11 +68,8 @@
                             <li><a href=#part-1>Reflections in Random (Crypto)</a></li>
                             <li><a href=#part-2>Forward Yet It Falls Back (Crypto)</a></li>
                             <li><a href=#part-3>Knight’s Droid (Reverse Engineering)</a></li>
-                            <li><a href=#part-4>Part 4</a></li>
-                            <li><a href=#part-5>Part 5</a></li>
-                            <li><a href=#conclusion>Conclusion</a></li>
-                            <li><a href=#extras>Extras</a></li>
-                        </ul>
+                            <li><a href=#part-4>Knightcal (Web Challenge)</a></li>
+                            </ul>
                     </nav>
                 </div><img src=../../../img/Knight_ctf_2025/knightctf-logo.png class=post-cover
                     alt="knight CTF 2025 Writeup " title="Cover Image">
@@ -82,8 +79,8 @@
                         </h2>
                         <p>Ayy, so this Monday was surprisingly not as depressing as Mondays usually are because I had a blast
                              soloing <a
-                             href=https://www.knightctf.com/ target=_blank rel=noopener>KNIGHT CTF 2025</a>
-                         ctf team.</p> under my team name <strong>dark0rs3</strong> <em>(which sounds way cooler than it probably is)</em>.
+                             href=https://www.knightctf.com/ target=_blank rel=noopener>KNIGHT CTF 2025.</a>
+                         </p> under my team name <strong>dark0rs3</strong> <em>(which sounds way cooler than it probably is)</em>.
                          But hey, enough about me flexing my solo squad status—let’s get into the good stuff.
                         <h2 id=part-1>Reflections in Random (Crypto)<a href=#part-1 class=hanchor arialabel=Anchor>&#8983;</a></h2>
                         <p>We begin with the challenge info:</p><img
@@ -93,6 +90,7 @@
                         <ul><li><b>Cipher:</b> PzExcRcFHQsdOxF2cR0WEXIPOQQWAQk=</li>
                             <li><b>Key:</b> 0x42</li>
                         </ul>
+                        <p>Now, onto the solution. I threw together a quick Python script to handle the decryption:</p>
                         <div class=highlight>
                             <pre tabindex=0
                                 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-py data-lang=py>
@@ -115,6 +113,21 @@
                                 <li><b>Key:</b> b"0123456789ABCDEF"</li>
                                 <li><b>iv:</b>b"FEDCBA9876543210"</li>
                             </ul>
+<p>My solution script looked like this:</p>
+                            <div class=highlight>
+                                <pre tabindex=0
+                                    style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-py data-lang=py>
+    </span></span><span style=display:flex><span><span style=color:#f92672>from</span> Crypto.Util.padding <span style=color:#f92672>import</span> *
+    </span></span><span style=display:flex><span><span style=color:#f92672>from</span> Crypto.Cipher <span style=color:#f92672>import</span> AES
+    </span></span><span style=display:flex><span><span style=color:#f92672>from</span> base64 <span style=color:#f92672></span> *
+    </span></span><span style=display:flex><span>shit  = b32decode( <span style=color:#2bba42>&#39;G7G2DGQ5SY4DCK5YVUDRROJI3UOAUUNTVR6XKDOKQO4CAAKK2MJA===&#39;</span>)
+    </span></span><span style=display:flex><span>key =<span style=color:#2bba42>&#39;b"0123456789ABCDEF"&#39;</span>
+    </span></span><span style=display:flex><span>iv = <span style=color:#2bba42> b"FEDCBA9876543210" </span> 
+    </span></span><span style=display:flex><span>cipher = AES.new(key, AES.MODE_CBC, iv)
+    </span></span><span style=display:flex><span>flag = unpad(cipher.decrypt(shit),<span style=color:#f92672> 16 </span> )
+    </span></span><span style=display:flex><span><span style=color:orange>print</span>(flag[::-<span style=color:#f92672>1</span>])
+    </span></span></code></pre>
+                            </div>
                         <p>This gave me the output:</p>
                         <p>Flag: <code>KCTF{R3vers3_R3vers3_D3C0DE}</code></p>
                         <h2 id=part-3>Knight’s Droid (Reverse Engineering)<a href=#part-3 class=hanchor arialabel=Anchor>&#8983;</a></h2><img
@@ -134,7 +147,7 @@
 </span></span></code></pre>
                         </div><img src=../../../img/Knight_ctf_2025/image3.png class=center
                             style=border-radius:8px>
-                           <ul> <li><b>Step 4:</b><em>  Used <a href=https://www.dcode.fr/cipher-identifier />dcode.fr Cipher Identifier</a>to figure out it was a Caesar cipher.</em></li>
+                           <ul> <li><b>Step 4:</b><em>  Used <a href=https://www.dcode.fr/cipher-identifier />dcode.fr Cipher Identifier</a> to figure out it was a Caesar cipher.</em></li>
                             <li><b>Step 5:</b><em> Decoded it, and the flag was:</em></li>
                         </ul>
                         <p>Flag: <code>KCTF{_congrat5_KNIGHT_y0u_g0t_yOuR_Kn1gh7_dR01d_}</code></p>
@@ -152,8 +165,8 @@
                         <hr>
                     </div>
                     <div class=pagination__buttons><span class="button previous"><a
-                                href=../p3rf3ctr00t_ctf_2024_forensics/index.html><span class=button__icon>←</span>
-                                <span class=button__text>P3RF3CT R00T CTF 2024 Writeup</span></a></span>
+                                href=.././index.html><span class=button__icon>←</span>
+                                <span class=button__text> CTF 2025 Writeup</span></a></span>
                         <span class="button next"><a href=.././index.html><span
                                     class=button__text>coming soon</span>
                                 <span class=button__icon>→</span></a></span>
