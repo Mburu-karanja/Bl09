@@ -3,12 +3,9 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <head>
-    <title>P3RF3CT R00T CTF 2024 Writeup - Forensics</title>
+    <title>KNIGHT CTF 2025 Writeup</title>
     <meta charset=utf-8>
     <meta name=viewport content="width=device-width,initial-scale=1">
-    <meta name=description
-        content="Introduction This weekend I had some fun participating in the P3RF3CTR00T CTF 2024 by p3rf3ctr00t ctf team.
-This is my second writeup, I&amp;rsquo;ll cover the forensics category specifically how I solved the Streams and Secrets set. I am not really that into forensics but I had to give it a try to score some points, I also got first blood on some of them. I was going solo in this CTF under NoPwnNoGain.">
     <meta name=keywords content>
     <meta name=robots content="noodp">
     <link rel=canonical href=index.html>
@@ -16,21 +13,15 @@ This is my second writeup, I&amp;rsquo;ll cover the forensics category specifica
         type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","../../../../www.google-analytics.com/analytics.js","ga"),ga("create","UA-202973704-2","auto"),ga("send","pageview"))</script>
     <meta name=twitter:card content="summary_large_image">
     <meta name=twitter:image content="https://https://mburu-karanja.github.io/Bl09/img/p3rf3ctr00t_ctf_2024/ctf_logo.jpg">
-    <meta name=twitter:title content="P3RF3CT R00T CTF 2024 Writeup - Forensics">
-    <meta name=twitter:description
-        content="Introduction This weekend I had some fun participating in the P3RF3CTR00T CTF 2024 by p3rf3ctr00t ctf team.
-This is my second writeup, I&rsquo;ll cover the forensics category specifically how I solved the Streams and Secrets set. I am not really that into forensics but I had to give it a try to score some points, I also got first blood on some of them. I was going solo in this CTF under NoPwnNoGain.">
+    <meta name=twitter:title content="KNIGHT CTF 2025 Writeup">
     <meta name=twitter:site content="@mburu_karanja_">
     <link rel=stylesheet href=../../../styles.css>
     <link rel=stylesheet href=../../../css/style.css>
-    <link rel="shortcut icon" href=../../../img/theme-colors/green.png>
-    <link rel=apple-touch-icon href=../../../img/theme-colors/green.png>
+    <link rel="shortcut icon" href=../../../img/theme-colors/icon.png>
+    <link rel=apple-touch-icon href=../../../img/theme-colors/icon.png>
     <meta property="og:locale" content="en">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="P3RF3CT R00T CTF 2024 Writeup - Forensics">
-    <meta property="og:description"
-        content="Introduction This weekend I had some fun participating in the P3RF3CTR00T CTF 2024 by p3rf3ctr00t ctf team.
-This is my second writeup, I&amp;rsquo;ll cover the forensics category specifically how I solved the Streams and Secrets set. I am not really that into forensics but I had to give it a try to score some points, I also got first blood on some of them. I was going solo in this CTF under NoPwnNoGain.">
+    <meta property="og:title" content="KNIGHT CTF 2025 Writeup">
     <meta property="og:url" content="https://mburu-karanja.github.io/Bl09/img/knight_ctf_2025/">
     <meta property="og:site_name" content>
     <meta property="og:image" content="https://mburu-karanja.github.io/Bl09/img/knight_ctf_2025/knightctf-logo.pnsg">
@@ -67,16 +58,16 @@ This is my second writeup, I&amp;rsquo;ll cover the forensics category specifica
         </header>
         <div class=content>
             <article class=post>
-                <h1 class=post-title><a href=index.html>P3RF3CT R00T CTF 2024 Writeup - Forensics</a></h1>
+                <h1 class=post-title><a href=index.html>KNIGHT CTF 2025 Writeup</a></h1>
                 <div class=post-meta><time class=post-date>2024-11-17</time></div>
                 <div class=table-of-contents>
                     <h2>Table of Contents</h2>
                     <nav id=TableOfContents>
                         <ul>
                             <li><a href=#introduction>Introduction</a></li>
-                            <li><a href=#part-1>Part 1</a></li>
-                            <li><a href=#part-2>Part 2</a></li>
-                            <li><a href=#part-3>Part 3</a></li>
+                            <li><a href=#part-1>Reflections in Random (Crypto)</a></li>
+                            <li><a href=#part-2>Forward Yet It Falls Back (Crypto)</a></li>
+                            <li><a href=#part-3>Knight’s Droid (Reverse Engineering)</a></li>
                             <li><a href=#part-4>Part 4</a></li>
                             <li><a href=#part-5>Part 5</a></li>
                             <li><a href=#conclusion>Conclusion</a></li>
@@ -85,3 +76,91 @@ This is my second writeup, I&amp;rsquo;ll cover the forensics category specifica
                     </nav>
                 </div><img src=../../../img/Knight_ctf_2025/knightctf-logo.png class=post-cover
                     alt="knight CTF 2025 Writeup " title="Cover Image">
+                <div class=post-content>
+                    <div>
+                        <h2 id=introduction>Introduction<a href=#introduction class=hanchor arialabel=Anchor>&#8983;</a>
+                        </h2>
+                        <p>Yo, so this Monday was surprisingly not as depressing as Mondays usually are because I had a blast
+                             soloing <a
+                             href=https://www.knightctf.com/ target=_blank rel=noopener>KNIGHT CTF 2025</a>
+                         ctf team.</p> under my team name <strong>dark0rs3</strong> <em>(which sounds way cooler than it probably is)</em>.
+                         But hey, enough about me flexing my solo squad status—let’s get into the good stuff.
+                        <h2 id=part-1>Reflections in Random (Crypto)<a href=#part-1 class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                        <p>We begin with the challenge info:</p><img
+                            src=../../../img/Knight_ctf_2025/cryto1a.png class=center
+                            style=border-radius:8px>
+                        <p>We were handed a file with the following details:</p>
+                        <ul><li><b>Cipher:</b> PzExcRcFHQsdOxF2cR0WEXIPOQQWAQk=</li>
+                            <li><b>Key:</b> 0x42</li>
+                        </ul>
+                        <div class=highlight>
+                            <pre tabindex=0
+                                style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-py data-lang=py>
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> Crypto.Util.strxor <span style=color:#f92672>import</span> *
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span>base64 <span style=color:#f92672>import</span> *
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ciper <span style=color:#f92672>=</span> <span style=color:#2bba42>&#39;PzExcRcFHQsdOxF2cR0WEXIPOQQWAQk=&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pluh <span style=color:#f92672>=</span> strxor(b64decode(cipher), (<span style=color:orange>bytes</span>.fromhex(<span style=color:#2bba42>"42"</span>) * <span style=color:#f92672>50</span> [:<span style=color:orange>=len</span>b64decode(cipher))])
+</span></span><span style=display:flex><span><span style=color:orange>print</span>(pluh[::-<span style=color:#f92672>1</span>])
+</span></span></code></pre>
+                        </div>
+                        <p>And boom, the output was::</p>
+                        <p>Flag: <code>KCTF{M0ST_34Sy_I_GU3ss}</code></p>
+                        <h2 id=part-2>Forward Yet It Falls Back (Crypto)<a href=#part-2 class=hanchor arialabel=Anchor>&#8983;</a></h2><img
+                            src=../../../img/Knight_ctf_2025/cryto2.png class=center
+                            style=border-radius:8px>
+                            <p>This time, the file provided had the following:</p>
+                            <ul><li><b>base32:</b> "G7G2DGQ5SY4DCK5YVUDRROJI3UOAUUNTVR6XKDOKQO4CAAKK2MJA===="</li>
+                                <li><b>Key:</b> b"0123456789ABCDEF"</li>
+                                <li><b>iv:</b>b"FEDCBA9876543210"</li>
+                            </ul>
+                        <p>This gave me the output:</p>
+                        <p>Flag: <code>KCTF{R3vers3_R3vers3_D3C0DE}</code></p>
+                        <h2 id=part-3>Knight’s Droid (Reverse Engineering)<a href=#part-3 class=hanchor arialabel=Anchor>&#8983;</a></h2><img
+                            src=../../../img/Knight_ctf_2025/image1.png class=center
+                            style=border-radius:8px>
+                        <p>For this one, we were handed a .apk file. Here’s how I cracked it:</p>
+                            <ul><li><b>Step 1:</b><em> Launch APK Easy Tool </em><img
+                                src=../../../img/Knight_ctf_2025/image2.png class=center
+                                style=border-radius:8px></li>
+                                <li><b>Step 2:</b><em> Decompile the APK and start poking around the files.</em></li>
+                                <li><b>Step 3:</b><em> Found a file called <span style=color:#604dc9>secretkeyverifier.smali</span> (yep, it caught my eye immediately). Inside was an encoded flag:</em></li>
+                            </ul>
+                        <div class=highlight>
+                            <pre tabindex=0
+                                style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=display:flex><span>
+<span style=color:#a6e22e>&#39;GYPB{_ykjcnwp5_GJECDP_u0q_c0p_uKqN_Gj1cd7_zN01z_}&#39;</span>
+</span></span></code></pre>
+                        </div><img src=../../../img/Knight_ctf_2025/image3.png class=center
+                            style=border-radius:8px>
+                           <ul> <li><b>Step 4:</b><em>  Used <a href=https://www.dcode.fr/cipher-identifier />dcode.fr Cipher Identifier</a>to figure out it was a Caesar cipher.</em></li>
+                            <li><b>Step 5:</b><em> Decoded it, and the flag was:</em></li>
+                        </ul>
+                        <p>Flag: <code>KCTF{_congrat5_KNIGHT_y0u_g0t_yOuR_Kn1gh7_dR01d_}</code></p>
+                        <h2 id=part-4>Knightcal (Web Challenge)<a href=#part-4 class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                        <p>This challenge was super sneaky. There was a simple calculator on a web page, 
+                            and every time you performed a computation, 
+                            it returned a response. After a bit of experimenting, 
+                            it became clear that each number corresponded to a letter.</p>
+                            <ul><li><b>Computation:</b> 0 + 7195</li></ul>
+                        <p>Flag: <code>KCTF{_congR4t5_KNIGHT_f1naLLy_YOU_g07_tH3_r1gh7_m4tH_}</code></p>
+                </div>
+                <p> Until next one, peace out and happy hacking!</p>
+                <div class=pagination>
+                    <div class=pagination__title><span class=pagination__title-h>Read other posts</span>
+                        <hr>
+                    </div>
+                    <div class=pagination__buttons><span class="button previous"><a
+                                href=../p3rf3ctr00t_ctf_2024_forensics/index.html><span class=button__icon>←</span>
+                                <span class=button__text>P3RF3CT R00T CTF 2024 Writeup</span></a></span>
+                        <span class="button next"><a href=.././index.html><span
+                                    class=button__text>coming soon</span>
+                                <span class=button__icon>→</span></a></span>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <footer class=footer>
+            
+            </div>    
