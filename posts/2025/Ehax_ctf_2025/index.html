@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang=en>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+    <title>EHAX CTF 2025 Writeup</title>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta name=keywords content>
+    <meta name=robots content="noodp">
+    <link rel=canonical href=index.html>
+    <script
+        type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","../../../../www.google-analytics.com/analytics.js","ga"),ga("create","UA-202973704-2","auto"),ga("send","pageview"))</script>
+    <meta name=twitter:card content="summary_large_image">
+    <meta name=twitter:image content="https://https://mburu-karanja.github.io/Bl09/img/ehax_ctf_2025/ehaxctf-logo.jpg">
+    <meta name=twitter:title content="ehax CTF 2025 Writeup">
+    <meta name=twitter:site content="@mburu_karanja_">
+    <link rel=stylesheet href=../../../styles.css>
+    <link rel=stylesheet href=../../../css/style.css>
+    <link rel="shortcut icon" href=../../../img/theme-colors/icon.png>
+    <link rel=apple-touch-icon href=../../../img/theme-colors/icon.png>
+    <meta property="og:locale" content="en">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="EHAX CTF 2025 Writeup">
+    <meta property="og:url" content="https://mburu-karanja.github.io/Bl09/img/ehax_ctf_2025/">
+    <meta property="og:site_name" content>
+    <meta property="og:image" content="https://mburu-karanja.github.io/Bl09/img/ehax_ctf_2025/ehaxctf-logo.pnsg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+    <meta property="article:published_time" content="2024-11-17 12:17:45 +0300 +0300">
+</head>
+<div id=particles-js></div>
+
+<body class=green>
+    <div class="container center headings--one-size" style=background:#1f222a;z-index:1>
+        <header class=header>
+            <div class=header__inner>
+                <div class=header__logo><a href=../../../index.html>
+                        <div class=logo>cd ~</div>
+                    </a></div>
+                <ul class="menu menu--mobile">
+                    <li class=menu__trigger>Menu&nbsp;▾</li>
+                    <li>
+                        <ul class=menu__dropdown>
+                            <li><a href=../../../about/index.html>About Me</a></li>
+                            <li><a href=../../../all-posts/index.html>All Posts</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <nav class=navigation-menu>
+                <ul class="navigation-menu__inner menu--desktop">
+                    <li><a href=../../../about/index.html>About Me</a></li>
+                    <li><a href=../../../all-posts/index.html>All Posts</a></li>
+            </ul>
+            </nav>
+        </header>
+        <div class=content>
+            <article class=post>
+                <h1 class=post-title><a href=index.html>EHAX CTF 2025 Writeup</a></h1>
+                <div class=post-meta><time class=post-date>2025-02-15</time></div>
+                <div class=table-of-contents>
+                    <h2>Table of Contents</h2>
+                    <nav id=TableOfContents>
+                        <ul>
+                            <li><a href=#introduction>Introduction</a></li>
+                            <li><a href=#part-1>Dots & Dashes(Crypto)</a></li>
+                            <li><a href=#part-2>Retrieve the Flag</a></li>
+                            
+                            </ul>
+                    </nav>
+                </div><img src=../../../img/Ehax_ctf_2025/ehaxctf-logo.jpg class=post-cover
+                    alt="ehax CTF 2025 Writeup " title="Cover Image">
+                <div class=post-content>
+                    <div>
+                        <h2 id=introduction>Introduction<a href=#introduction class=hanchor arialabel=Anchor>&#8983;</a>
+                        </h2>
+                        <p> ayy this weekend, with my team <strong>fr334aks-mini</strong>, I joined the <a
+                            href=https://ehax.tech/ target=_blank rel=noopener>EHAX CTF</a>—their very first edition! 
+                            Now, while I wasn’t the one submitting the flags, my teammate, who had the reaction speed of a caffeinated squirrel, 
+                            kept beating me to it. Every time I cracked a challenge, I’d rush over to submit the flag, only to find out he had already done it.
+                             Honestly, I started feeling like an intern in my own CTF team. Alright, no more chatter—time to dive in!
+                         <h2 id=part-1>Dots & Dashes(Crypto)<a href=#part-1 class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                        <p>We begin with the challenge info:</p><img
+                            src=../../../img/Ehax_ctf_2025/crypto.jpg class=center
+                            style=border-radius:8px width="50%">
+                        <p>We were given a WAV file. Now, I don’t know about you,
+                            but my first instinct was to blast it at full volume just in
+                             case the flag was some hidden subliminal message. 
+                            Turns out, it was Morse code. Classic.</p>
+                        <p>Now, onto the solution. I uploaded the file to <a
+                            href=https://morsecode.world/international/decoder/audio-decoder-adaptive.html target=_blank rel=noopener>Morse Code Audio Decoder</a>.</p>
+                        <p>The output was:</p>
+                        <pre tabindex=0
+                                style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=display:flex><span>
+<span style=color:#a6e22e>&#39;W0RY3 D1Q3N3X3 0X3B4T10T&#39;</span>
+</span></span></code></pre>
+                        <p>Since that looked suspiciously like it needed further decoding,
+                             I ran it through Decodefr, which revealed it to be a Vigenère cipher.</p>
+                       <p>and boom! here was the flag:</p>
+                        <p>Flag: <code>EHAX{m0rs3_v1g3n3r3_0p3r4t10n}</code></p>
+
+                        <h2 id=part-2>Retrieve the Flag (Misc)<a href=#part-2 class=hanchor arialabel=Anchor>&#8983;</a></h2><img
+                            src=../../../img/Ehax_ctf_2025/reverse.jpg class=center
+                            style=border-radius:8px width="50%">
+                            <p>This time, We were given two files:</p>
+                            <ul><li>An audio file (which, based on the challenge description, we were supposed to "sit back, relax, and enjoy").</li>
+                                <li>A flag.zip file (which, of course, was password-protected).</li>
+                            </ul>
+<p><em>solution</em></p>
+                            <div class=highlight>
+                               <p>
+                                Following the instructions like a good participant, I played the audio file.
+                                About halfway through, something sounded off <em>(besides my sense of accomplishment, that is). </em>
+                                 <p>I loaded it into Audacity and switched to spectrogram view.</p>
+                               </p>
+                            </div>
+                            <img
+                            src=../../../img/Ehax_ctf_2025/audacity.jpg class=center
+                            style=border-radius:8px width="50%">
+                        <p>Boom! Hidden within the spectrogram was this string:</p>
+                        <pre tabindex=0
+                                style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=display:flex><span>
+<span style=color:#a6e22e>&#39;:DE9:D4@CC64E&#39;</span>
+</span></span></code></pre>
+<p>Thinking this was the zip password, I tried it. No luck. Turns out, it was encoded. Most people hit this point and bailed out, 
+    thinking they'd hit a dead end. Oops!</p>
+                        <p>I ran it through Decodefr, and it turned out to be ROT47, which gave:</p>
+                        <img
+                            src=../../../img/Ehax_ctf_2025/reverse1.jpg class=center
+                            style=border-radius:8px width="50%">
+                        <pre tabindex=0
+                                style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=display:flex><span>
+<span style=color:#a6e22e>&#39;isthiscorrect&#39;</span>
+</span></span></code></pre>
+<p>Entering this as the zip password finally extracted a file: flag.gif.</p>
+    <p>Of course, the flag wasn’t just in the image; it was hidden in the metadata.</p>    
+   <p>Using exiftool, I found this encoded string:</p>
+   <img
+                            src=../../../img/Ehax_ctf_2025/reverse2.jpg class=center
+                            style=border-radius:8px width="50%">
+   <pre tabindex=0
+                                style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ps data-lang=ps><span style=display:flex><span>
+<span style=color:#a6e22e>&#39;5JMFC{qttpx@dtz##knsfqqd__ktzsi+_ymj%kqfl_tw_ini_dtz?}&#39;</span>
+</span></span></code></pre>
+<p>Decoded using Vigenère cipher (Decodefr again), and voilà, the final flag was:</p>
+                        <p>Flag: <code>EHAX{looks@you##finally__found+_the%flag_or_did_you?}</code></p>
+                        <p>At this point, I rushed to submit it, only to realize…
+
+                            the competition had already ended. 
+                            
+                            Imagine solving a challenge, feeling so 1337, only to realize you just played yourself. GG, EHAX. GG.</p>
+                </div>
+                <p> Until next one, GG and happy hacking!</p>
+                <div class=pagination>
+                    <div class=pagination__title><span class=pagination__title-h>Read other posts</span>
+                        <hr>
+                    </div>
+                    <div class=pagination__buttons><span class="button previous"><a
+                                href=../Ectf_2025/index.html><span class=button__icon>←</span>
+                                <span class=button__text>ECTF CTF 2025 Writeup</span></a></span>
+                        <span class="button next"><a href=../Ectf_2025/index.html><span
+                                    class=button__text>Coming soon</span>
+                                <span class=button__icon>→</span></a></span>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <footer class=footer>
+            
+            </div>    
