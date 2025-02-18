@@ -80,20 +80,20 @@
                 <div class="highlight">
                     <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
                         <code class="language-py" data-lang="py">
-                            <span style="color:#f92672">flag</span> = input()
-                            <span style="color:#f92672">carry</span> = 0
-                            <span style="color:#f92672">key</span> = <span style="color:#2bba42">"Awesome!"</span>
-                            <span style="color:#f92672">output</span> = []
-                            <span style="color:#f92672">for</span> i, c <span style="color:#f92672">in</span> enumerate(flag):
-                                <span style="color:#f92672">val</span> = ord(c)
-                                val += carry
-                                val %= 256
-                                val ^= ord(key[i % len(key)])
-                                output.append(val)
-                                carry += ord(c)
-                                carry %= 256
+                        </span></span><span style=display:flex><span style="color:#f92672">flag</span> = input()
+                    </span></span><span style=display:flex><span style="color:#f92672">carry</span> = 0
+                </span></span><span style=display:flex><span style="color:#f92672">key</span> = <span style="color:#2bba42">"Awesome!"</span>
+            </span></span><span style=display:flex><span style="color:#f92672">output</span> = []
+        </span></span><span style=display:flex><span style="color:#f92672">for</span> i, c <span style="color:#f92672">in</span> enumerate(flag):
+    </span></span><span style=display:flex><span style="color:#f92672">val</span> = ord(c)
+</span></span><span style=display:flex>val += carry
+</span></span><span style=display:flex>val %= 256
+</span></span><span style=display:flex>val ^= ord(key[i % len(key)])
+</span></span><span style=display:flex>output.append(val)
+</span></span><span style=display:flex>carry += ord(c)
+</span></span><span style=display:flex>carry %= 256
                 
-                            <span style="color:orange">print</span>(bytes(output).hex())
+</span></span><span style=display:flex><span style="color:orange">print</span>(bytes(output).hex())
                         </code>
                     </pre>
                 </div>
@@ -101,23 +101,23 @@
                 <p>The script took an input string (the flag) and processed it using a combination of addition, XOR, and modulo operations, then outputted a hex-encoded string. The objective was to reverse this process and retrieve the original flag.</p>
                 <p>I reverse-engineered the process by reversing the XOR operation and undoing the carry addition:</p>
                 <div class="highlight">
-                    <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;white-space: pre; text-align: left;">
-                        <code class="language-py" data-lang="py">
-                            <span style="color:#f92672">hex_string</span> = <span style="color:#2bba42">"23a326c27bee9b40885df97007aa4dbe410e93"</span>
-                            <span style="color:#f92672">encoded_bytes</span> = bytes.fromhex(hex_string)
+                    <pre tabindex=0
+                                    style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-py data-lang=py>
+                        </span></span><span style=display:flex><span style="color:#f92672">hex_string</span> = <span style="color:#2bba42">"23a326c27bee9b40885df97007aa4dbe410e93"</span>
+                        </span></span><span style=display:flex><span style="color:#f92672">encoded_bytes</span> = bytes.fromhex(hex_string)
                 
-                            <span style="color:#f92672">key</span> = <span style="color:#2bba42">"Awesome!"</span>
-                            <span style="color:#f92672">carry</span> = 0
-                            <span style="color:#f92672">flag</span> = []
+                        </span></span><span style=display:flex><span style="color:#f92672">key</span> = <span style="color:#2bba42">"Awesome!"</span>
+                        </span></span><span style=display:flex><span style="color:#f92672">carry</span> = 0
+                        </span></span><span style=display:flex><span style="color:#f92672">flag</span> = []
                 
-                            <span style="color:#f92672">for</span> i, val <span style="color:#f92672">in</span> enumerate(encoded_bytes):
-                                val ^= ord(key[i % len(key)])  <span style="color:#75715e"># Reverse XOR operation</span>
-                                val = (val - carry) % 256      <span style="color:#75715e"># Reverse addition with carry</span>
-                                flag.append(chr(val))
-                                carry = (carry + val) % 256    <span style="color:#75715e"># Update carry</span>
+                    </span></span><span style=display:flex><span style="color:#f92672">for</span> i, val <span style="color:#f92672">in</span> enumerate(encoded_bytes):
+                </span></span><span style=display:flex>val ^= ord(key[i % len(key)])  <span style="color:#75715e"># Reverse XOR operation</span>
+            </span></span><span style=display:flex>val = (val - carry) % 256      <span style="color:#75715e"># Reverse addition with carry</span>
+        </span></span><span style=display:flex>flag.append(chr(val))
+        </span></span><span style=display:flex>carry = (carry + val) % 256    <span style="color:#75715e"># Update carry</span>
                 
-                            <span style="color:orange">original_flag</span> = "".join(flag)
-                            <span style="color:orange">print</span>(<span style="color:#f92672">"Recovered Flag:"</span>, original_flag)
+    </span></span><span style=display:flex> <span style="color:orange">original_flag</span> = "".join(flag)
+</span></span><span style=display:flex> <span style="color:orange">print</span>(<span style="color:#f92672">"Recovered Flag:"</span>, original_flag)
                         </code>
                     </pre>
                 </div>
