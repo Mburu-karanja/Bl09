@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang=en>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+    <title>Osmosis April Fool's Day Writeup</title>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta name=keywords content>
+    <meta name=robots content="noodp">
+    <link rel=canonical href=index.html>
+    <script
+        type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","../../../../www.google-analytics.com/analytics.js","ga"),ga("create","UA-202973704-2","auto"),ga("send","pageview"))</script>
+    <meta name=twitter:card content="summary_large_image">
+    <meta name=twitter:image content="https://https://mburu-karanja.github.io/Bl09/img/OsmosisCTF/osmosis-logo.png">
+    <meta name=twitter:title content="OsmosisCTF Writeup">
+    <meta name=twitter:site content="@mburu_karanja_">
+    <link rel=stylesheet href=../../../styles.css>
+    <link rel=stylesheet href=../../../css/style.css>
+    <link rel="shortcut icon" href=../../../img/theme-colors/icon.png>
+    <link rel=apple-touch-icon href=../../../img/theme-colors/icon.png>
+    <meta property="og:locale" content="en">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="OsmosisCTF 2025 Writeup">
+    <meta property="og:url" content="https://mburu-karanja.github.io/Bl09/img/OsmosisCtf/">
+    <meta property="og:site_name" content>
+    <meta property="og:image" content="https://mburu-karanja.github.io/Bl09/img/OsmosisCtf/ectf-logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+    <meta property="article:published_time" content="2024-11-17 12:17:45 +0300 +0300">
+</head>
+<div id=particles-js></div>
+
+<body class=green>
+    <div class="container center headings--one-size" style=background:#1f222a;z-index:1>
+        <header class=header>
+            <div class=header__inner>
+                <div class=header__logo><a href=../../../index.html>
+                        <div class=logo>cd ~</div>
+                    </a></div>
+                <ul class="menu menu--mobile">
+                    <li class=menu__trigger>Menu&nbsp;▾</li>
+                    <li>
+                        <ul class=menu__dropdown>
+                            <li><a href=../../../about/index.html>About Me</a></li>
+                            <li><a href=../../../all-posts/index.html>All Posts</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <nav class=navigation-menu>
+                <ul class="navigation-menu__inner menu--desktop">
+                    <li><a href=../../../about/index.html>About Me</a></li>
+                    <li><a href=../../../all-posts/index.html>All Posts</a></li>
+            </ul>
+            </nav>
+        </header>
+        <div class=content>
+            <article class=post>
+                <h1 class=post-title><a href=index.html>OSINT CTF Writeup - OSMOSIS Association</a></h1>
+                <div class=post-meta><time class=post-date>2025-04-01</time></div>
+                <div class=table-of-contents>
+                    <h2>Table of Contents</h2>
+                    <nav id=TableOfContents>
+                        <ul>
+                            <li><a href=#introduction>Introduction</a></li>
+                            <li><a href=#part-1>Encrypted (forensics)</a></li>
+                            <li><a href=#part-2>(forensics)</a></li>
+                            <li><a href=#part-3>Lost Flash Drive (forensics)</a></li>
+                        </ul>
+                    </nav>
+                </div><img src=../../../img/OsmosisCtf/osmosis-logo.png class=post-cover
+                alt="OsmosisCTF April Fool's Day Writeup " title="Cover Image">
+
+                
+                <h2 id=introduction>Introduction<a href=#introduction class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>I jumped into the OSINT CTF by <a href="https://www.linkedin.com/company/osmosis-institute" target=_blank rel=noopener>OSMOSIS Association</a>
+                     a bit late but still rolled in with top-10 ambitions. I solved some challenges fast,
+                      held my ground… then came the waiting game for new tasks. Eventually,
+                       I tapped out early and woke up to find I’d climbed to 21st place. 
+                       Not bad for joining late and leaving late!</p>
+                <p>Strangely enough, despite this being an OSINT-focused CTF, 
+                    the write-up will only include some of the challenges I tackled under forensics. 
+                    Here’s my breakdown of the journey:</p>
+                
+                <h2 id=part-1>Encrypted (forensics)<a href=#part-1 class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>The first challenge, "Encrypted," presented us with a password-protected PDF file. Without a given password, the best approach was to brute-force it.</p>
+                
+                <h3>Solution</h3>
+                <p>For this task, I used <b>John the Ripper</b>, a well-known password-cracking tool. The process involved two key steps:</p>
+                
+                <ol>
+                    <li>Extracting the hash from the PDF file using <b>pdf2john</b>:</li>
+                    <pre class="highlight"><code>pdf2john target.pdf > enc</code></pre>
+                    <li>Cracking the password with John:</li>
+                    <pre class="highlight"><code>john enc</code></pre>
+                    <li>If using a wordlist, specify it using:</li>
+                    <pre class="highlight"><code>john enc.hash --wordlist=/path/to/wordlist.txt</code></pre>
+                </ol>
+                <p>Once the password was cracked, I was able to open the PDF, revealing an image containing a flag:</p>
+                
+                <p>Flag: <code>flag{kramer_the_best_hacker_ever}</code></code></p>
+                
+                <h2 id=part-2>(forensics)<a href=#part-2 class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>Here we were given a file called <b>unk</b> with no listed extension.</p>
+                
+                <h3>Solution</h3>
+                <p>The first step was to identify the file type using the <b>file</b> command:</p>
+                <pre class="highlight"><code>file unk</code></pre>
+                <p>This revealed that the file was a ZIP archive. Knowing this, I proceeded to extract its contents:</p>
+                <pre class="highlight"><code>unzip unk</code></pre>
+                <p>Among the extracted files was an image named <b>thumbnail.jpeg</b>. Upon examining the image, I discovered the hidden flag:</p>
+                <p>Flag: <code>FLAG{old_macdonald_or_mcdonald_supplier?}</code></p>
+                <h2 id=part-3>Lost Flash Drive (forensics)<a href=#part-3 class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>For this challenge, "Lost Flash Drive," we were provided with a ZIP file. Upon extraction, we obtained a file named <b>lost_flash_drive</b>, which turned out to be a forensic image.</p>
+                
+                <h3>Solution</h3>
+                <p>I used <b>FTK Imager</b> to analyze the forensic image. This allowed me to browse through its contents visually.</p>
+                <p>While skimming through the files, I discovered <b>passwords.txt.zip</b>. Extracting this revealed <b>password.txt</b>, which contained the flag:</p>
+            
+                <p>Flag: <code>flag{its_adventure_time_yee_boi!!!}</code></p>
+                
+                <p>And that wrapped up my quick dive into the OSINT CTF! Despite joining late and missing some OSINT-specific challenges, I had a blast solving these. See you at the next one!</p>
+            </article>
+        </div>
+    </div>
+</body>
+
+
+<div class=pagination>
+        <div class=pagination__title><span class=pagination__title-h>Read other posts</span>
+        <hr>
+         </div>
+            <div class=pagination__buttons><span class="button previous"><a
+                        href=../Apoorvctf/index.html><span class=button__icon>←</span>
+                        <span class=button__text>APOORVCTF 2025 Writeup</span></a></span>
+                <span class="button next"><a href=.././index.html><span
+                            class=button__text>Coming soon</span>
+                        <span class=button__icon>→</span></a></span>
+            </div>
+        </div>
+    </article>
+</div>
+<footer class=footer>
+    
+    </div>    
