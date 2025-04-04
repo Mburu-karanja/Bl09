@@ -3,7 +3,7 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <head>
-    <title>Osmosis April Fool's Day Writeup</title>
+    <title>OSMOSIS CTF Writeup</title>
     <meta charset=utf-8>
     <meta name=viewport content="width=device-width,initial-scale=1">
     <meta name=keywords content>
@@ -81,7 +81,7 @@
                        I tapped out early and woke up to find I’d climbed to 21st place. 
                        Not bad for joining late and leaving late!</p>
                 <p>Strangely enough, despite this being an OSINT-focused CTF, 
-                    the write-up will only include some of the challenges I tackled under forensics. 
+                    the write-up will only include some of the challenges I tackled under forensics, which were in case considered unsupported.
                     Here’s my breakdown of the journey:</p>
                 
                 <h2 id=part-1>pdfcrypt (forensics)<a href=#part-1 class=hanchor arialabel=Anchor>&#8983;</a></h2>
@@ -92,36 +92,66 @@
                 
                 <ol>
                     <li>Extracting the hash from the PDF file using <b>pdf2john</b>:</li>
-                    <pre class="highlight"><code>pdf2john target.pdf > enc</code></pre>
+                    <img
+                            src=../../../img/OsmosisCtf/enc.jpg class=center
+                            style=border-radius:8px width="50%">
                     <li>Cracking the password with John:</li>
-                    <pre class="highlight"><code>john enc</code></pre>
-                    <li>If using a wordlist, specify it using:</li>
-                    <pre class="highlight"><code>john enc.hash --wordlist=/path/to/wordlist.txt</code></pre>
-                </ol>
-                <p>Once the password was cracked, I was able to open the PDF, revealing an image containing a flag:</p>
+                    <div class="highlight">
+                        <pre tabindex=0
+                                        style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-py data-lang=py>
+
+                            </span></span><span style=display:flex><span style="color:#0d86b1">john</span> <span style="color:#f2f5f2"> enc</span>
+                    
+                        </code>
+                        </pre>
+                    </div>
+                <li>If using a wordlist, specify it using:</li>
+                <div class="highlight">
+                    <pre tabindex=0
+                                    style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-py data-lang=py>
+
+                        </span></span><span style=display:flex><span style="color:#0d86b1">john</span> -w=/path/to/wordlist.txt <span style="color:#f2f5f2"> <b>enc</b></span>
                 
+                    </code>
+                    </pre>
+                </div>
+                </ol>
+                <img
+                            src=../../../img/OsmosisCtf/file1.jpg class=center
+                            style=border-radius:8px width="50%">
+                <p>Once the password was cracked, I was able to open the PDF, revealing an image containing a flag just below it:</p>
+                <img
+                            src=../../../img/OsmosisCtf/file2.jpg class=center
+                            style=border-radius:8px width="50%">
                 <p>Flag: <code>flag{kramer_the_best_hacker_ever}</code></code></p>
                 
-                <h2 id=part-2>unk (forensics)<a href=#part-2 class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <h2 id=part-2>unk mburuka(forensics)<a href=#part-2 class=hanchor arialabel=Anchor>&#8983;</a></h2>
                 <p>Here we were given a file called <b>unk</b> with no listed extension.</p>
                 
                 <h3>Solution</h3>
                 <p>The first step was to identify the file type using the <b>file</b> command:</p>
-                <pre class="highlight"><code>file unk</code></pre>
+                <img
+                            src=../../../img/OsmosisCtf/unk.jpg class=center
+                            style=border-radius:8px width="50%">
                 <p>This revealed that the file was a ZIP archive. Knowing this, I proceeded to extract its contents:</p>
-                <pre class="highlight"><code>unzip unk</code></pre>
-                <p>Among the extracted files was an image named <b>thumbnail.jpeg</b>. Upon examining the image, I discovered the hidden flag:</p>
+                <img
+                            src=../../../img/OsmosisCtf/unk1.jpg class=center
+                            style=border-radius:8px width="50%">
+                <p>Among the extracted files was an image named <b>thumbnail.jpeg</b>. Upon examining the image, I discovered the flag in plain site:</p>
+                <img
+                            src=../../../img/OsmosisCtf/unk2.jpg class=center
+                            style=border-radius:8px width="50%">
                 <p>Flag: <code>FLAG{old_macdonald_or_mcdonald_supplier?}</code></p>
                 <h2 id=part-3>Lost Flash Drive (forensics)<a href=#part-3 class=hanchor arialabel=Anchor>&#8983;</a></h2>
                 <p>For this challenge, "Lost Flash Drive," we were provided with a ZIP file. Upon extraction, we obtained a file named <b>lost_flash_drive</b>, which turned out to be a forensic image.</p>
                 
                 <h3>Solution</h3>
-                <p>I used <b>FTK Imager</b> to analyze the forensic image. This allowed me to browse through its contents visually.</p>
+                <p>I used <b>FTK Imager</b> to analyze the forensic image. This allowed me to skim through its contents visually.</p>
                 <p>While skimming through the files, I discovered <b>passwords.txt.zip</b>. Extracting this revealed <b>password.txt</b>, which contained the flag:</p>
             
                 <p>Flag: <code>flag{its_adventure_time_yee_boi!!!}</code></p>
                 
-                <p>And that wrapped up my quick dive into the OSINT CTF! Despite joining late and missing some OSINT-specific challenges, I had a blast solving these. See you at the next one!</p>
+                <p>And that wrapped up my quick dive into the forensics challenges on OSINT CTF! See you at the next one and happy hakin9!</p>
             </article>
         </div>
     </div>
