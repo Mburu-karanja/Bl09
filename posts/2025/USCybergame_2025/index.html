@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang=en>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+    <title>USCYBERGAME 2025 Writeup</title>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta name=keywords content>
+    <meta name=robots content="noodp">
+    <link rel=canonical href=index.html>
+    <script
+        type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","../../../../www.google-analytics.com/analytics.js","ga"),ga("create","UA-202973704-2","auto"),ga("send","pageview"))</script>
+    <meta name=twitter:card content="summary_large_image">
+    <meta name=twitter:image content="https://mburu-karanja.github.io/Bl09/img/USCYBERGAME_2025/uscyber-logo.png">
+    <meta name=twitter:title content="USCYBERGAME 2025 Writeup">
+    <meta name=twitter:site content="@your_handle">
+    <link rel=stylesheet href=../../../styles.css>
+    <link rel=stylesheet href=../../../css/style.css>
+    <link rel="shortcut icon" href=../../../img/theme-colors/icon.png>
+    <link rel=apple-touch-icon href=../../../img/theme-colors/icon.png>
+    <meta property="og:locale" content="en">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="USCYBERGAME 2025 Writeup">
+    <meta property="og:url" content="https://mburu-karanja.github.io/Bl09/img/uscyber/">
+    <meta property="og:site_name" content>
+    <meta property="og:image" content="https://mburu-karanja.github.io/Bl09/img/uscyber/uscyber-logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+    <meta property="article:published_time" content="2025-07-2 12:17:45 +0300 +0300">
+</head>
+<div id=particles-js></div>
+
+<body class=green>
+    <div class="container center headings--one-size" style=background:#1f222a;z-index:1>
+        <header class=header>
+            <div class=header__inner>
+                <div class=header__logo><a href=../../../index.html>
+                        <div class=logo>cd ~</div>
+                    </a></div>
+                <ul class="menu menu--mobile">
+                    <li class=menu__trigger>Menu&nbsp;▾</li>
+                    <li>
+                        <ul class=menu__dropdown>
+                            <li><a href=../../../about/index.html>About Me</a></li>
+                            <li><a href=../../../all-posts/index.html>All Posts</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <nav class=navigation-menu>
+                <ul class="navigation-menu__inner menu--desktop">
+                    <li><a href=../../../about/index.html>About Me</a></li>
+                    <li><a href=../../../all-posts/index.html>All Posts</a></li>
+            </ul>
+            </nav>
+        </header>
+        <div class=content>
+            <article class=post>
+                <h1 class=post-title><a href=index.html>USCYBERGAME 2025 Writeup</a></h1>
+                <div class=post-meta><time class=post-date>2025-06-11</time></div>
+                <div class=table-of-contents>
+                    <h2>Table of Contents</h2>
+                    <nav id=TableOfContents>
+                        <ul>
+                            <li><a href=#introduction>Introduction</a></li>
+                            <li><a href=#web-challenge>If You Give a Mouse a Cookie (Web)</a></li>
+                            <li><a href=#forensic1>Future Of SWE (Forensics)</a></li>
+                            <li><a href=#forensic2>Just Look At It (Stego)</a></li>
+                            <li><a href=#forensic3>Deleted (Forensics)</a></li>
+                            <li><a href=#forensic4>Redactable (PDF Forensics)</a></li>
+                            <li><a href=#crypto>Gotta Go Low (Crypto)</a></li>
+                            <li><a href=#re>CTF Café (Reverse Engineering)</a></li>
+                            </ul>
+                    </nav>
+                </div><img src=../../../img/uscyber/uscyber-logo.png class=post-cover
+                    alt="USCYBERGAME 2025 Writeup" title="Cover Image">
+                <div class=post-content>
+                    <div>
+                        <h2 id=introduction>Introduction<a href=#introduction class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                        <p>Talk about last-minute entries! I discovered USCYBERGAME 2025 was happening literally on the final day of the competition. But ayy, Managed to smash through several challenges and here's how I did some of them:</p>
+
+                        <!-- ===== WEB CHALLENGE ===== -->
+                <h2 id=web-challenge>If You Give a Mouse a Cookie (Web)</h2>
+            <p><em>A client-side scavenger hunt with cookie manipulation and path traversal</em></p>
+
+            <h3>Phase 1: Initial Recon</h3>
+            <p><strong>Browser DevTools Analysis:</strong></p>
+            <div class=highlight>
+                <pre><code class=language-javascript> 
+// Inside the cookie storage, I found a suspicious-looking base64 string:
+QWZ0ZXIgaW5zcGVjdGluZyB0aGUgY29udGVudHMsIGhlJ2xsIGhvcCBvbiB0aGUgUk9CT1QgdmFjY3V1bSBwaWNraW5nIHVwIHRoZSBjcnVtYnMgaGUgbWFkZS4KQ3J1bWIgMTogZFY5Q1FHc3paRjloVA==</code></pre>
+            </div>
+            <p><strong>Base64 Decoding:</strong></p>
+            <div class=highlight>
+                <pre><code class=language-bash>┌──(mburk4㉿notRoot)-[~/Downloads]
+└─$ echo "QWZ0ZXIgaW5zcGVjdGluZyB0aGUgY29udGVudHMsIGhlJ2xsIGhvcCBvbiB0aGUgUk9CT1QgdmFjY3V1bSBwaWNraW5nIHVwIHRoZSBjcnVtYnMgaGUgbWFkZS4KQ3J1bWIgMTogZFY5Q1FHc3paRjloVA==" | base64 -d
+After inspecting the contents, he'll hop on the ROBOT vaccuum picking up the crumbs he made.
+Crumb 1: dV9CQGszZF9hT  "</code></pre>
+            </div>
+
+            <h3>Phase 2: Robots.txt Enumeration</h3>
+            <p>The hint mentioning "ROBOT" immediately brought robots.txt to mind—a file that instructs search engines on which paths to ignore. Visiting <em>/robots.txt</em> turned out to be the right move, as it revealed the next clue: the second crumb.</p>
+            <div class=highlight>
+                <img
+                src=../../../img/uscyber/web4.png class=center
+                style=border-radius:8px width="100%">
+            </div>
+            <p>Hidden admin portal at <b>/admin</b></p>
+
+            <h3>Phase 3: Admin Portal Exploitation</h3>
+            <p>The <em>/admin</em> page turned out to be a login portal. The typical combination didn’t get me in, so I took the hacker’s approach and inspected the page source. Hidden within the HTML, I found the third clue what turned out to be the actual password for the admin account:</p>
+            <div class=highlight>
+             <img
+                src=../../../img/uscyber/web3.png class=center
+                style=border-radius:8px width="100%">
+
+            <h3>Phase 4: Baking Time Begins</h3>
+            <p>Inside the <b><em>/kitchen</em></b> directory, I discovered a <strong>README.txt</strong> file:</p>
+            <img
+                src=../../../img/uscyber/web5.png class=center
+                style=border-radius:8px width="100%">
+           <p>While exploring further around the kitchen, I stumbled upon a handwritten recipe note:</p>
+           <img
+                src=../../../img/uscyber/web6.png class=center
+                style=border-radius:8px width="100%">
+            <p>It was clear the final ingredient the last crumb was near. After some digging, I found a Milk.js file. Inside it? The final crumb I needed</p>    
+           <img
+                src=../../../img/uscyber/web7.png class=center
+                style=border-radius:8px width="100%">
+                <p>With all the crumbs now collected, I combined them to bake the final cookie string which was a base64 encoded string.<p/>
+                <p>To activate it, I opened the browser's developer tools, modified the original cookie, and pasted in my freshly baked value. A quick refresh later...</p>
+            <img
+                src=../../../img/uscyber/web8.png class=center
+                style=border-radius:8px width="100%">
+                
+                <p>Voila</p>
+                <img
+                src=../../../img/uscyber/web10.png class=center
+                style=border-radius:8px width="100%">
+            <p><strong>Flag:</strong><code>SVBRG{he_w1ll_g!v3_y0u_A_fl@g_a5_tH4nk%!}</code></p>
+
+            <!-- ==================== FORENSIC 1 ==================== -->
+            <h2 id=forensic1>Future Of SWE (Forensics)</h2>
+<p>The <strong>Future Of SWE</strong> challenge focused on digital forensics, where critical files had been deleted by an AI named Clippy. The goal was to recover those files and extract the flag hidden within them.</p>
+
+            <h3>Autopsy Workflow</h3>
+            <img
+                src=../../../img/uscyber/swe1.png class=center
+                style=border-radius:8px width="100%">
+                <ul>
+                <li>Deleted <b>ProjectNextBigThing.docx</b></li>
+                <li>Recovered <b>meeting_notes.txt</b> 
+                </li>
+            </ul>
+
+                <img
+                src=../../../img/uscyber/swe3.png class=center
+                style=border-radius:8px width="100%">
+                <p>The Docs cannot be read normally as it seems to be encrypted</p>
+                <p>To open the <b>ProjectNextBigThing.docx</b> file, the password <em>clippyisawesome</em> was used.</p>
+                <img
+                src=../../../img/uscyber/swe4.png class=center
+                style=border-radius:8px width="100%">
+                
+            <p>After opening the file,the flag is shown:</p>
+            <img
+                src=../../../img/uscyber/swe5.png class=center
+                style=border-radius:8px width="100%">
+            <p><strong>Flag:</strong><code>SVUSCG{th3_futur3_is_look1n_br1ght}</code></p>
+
+            <!-- ==================== STEGO CHALLENGE ==================== -->
+            <h2 id=forensic2>Just Look At It (Stego)</h2>
+            <p><em>Steganography with password-protected embedding</em></p>
+
+            <h3>Toolchain</h3>
+            <p>At first glance, the file appeared to be a standard image. I began my analysis with a few foundational checks.</p>
+
+<p>I ran <b>strings</b> to extract any readable text it came up clean. I followed up with <b>binwalk</b> and <b>foremost</b> to check for any hidden or embedded files, but the output confirmed the image wasn’t hiding anything obvious using those methods.</p>
+
+<p>Knowing steganography often hides data behind a passphrase, I selected a tool built for this challenge: <strong>stegseek</strong>.</p>
+
+<p>Stegseek is designed to extract hidden data from image files using a wordlist. I launched it against the image using a rockyou based wordlist. Within seconds, stegseek successfully brute-forced the password and extracted the embedded file containing the flag.</p>
+<img
+                src=../../../img/uscyber/steg.png class=center
+                style=border-radius:8px width="100%">
+            <p><strong>Flag:</strong><code>SVUSCG{l00k_4t_th1s_gr44444444444ph}</code></p>
+            
+            <!-- ==================== FORENSIC 2 ==================== -->
+            <h2 id=forensic3>Deleted (Forensics)</h2>
+            <p><em>File recovery challenge</em>, find and restore a file that had been deleted from the file system.</p>
+<p>This challenge was straightforward and efficient.</p>
+
+<p>I loaded the provided disk image into <strong>Autopsy</strong>, a powerful digital forensics tool.</p>
+
+<p>Using Autopsy’s file recovery feature, I quickly identified a set of deleted files. One of them stood out an image file.</p>
+
+<p>Opening the image revealed the flag embedded directly within it.</p>
+<img
+                src=../../../img/uscyber/del.png class=center
+                style=border-radius:8px width="100%">
+            <p><strong>Flag:</strong><code>SVUSCG{FILE_DELETE_2025}</code></p>
+
+            <!-- ==================== PDF FORENSICS ==================== -->
+            <h2 id=forensic4>Redactable (PDF Forensics)</h2>
+            <img
+                src=../../../img/uscyber/redact1.png class=center
+                style=border-radius:8px width="50%">
+            <p>The Redactable challenge began with a locked PDF file.</p>
+<p>The objective was clear: gain access, extract its contents, and reveal the hidden secret embedded within.</p>
+<p>It unfolded as a fun, multi-step journey through PDF analysis and content extraction.</p>
+            <h3>Password Cracking</h3>
+            <img
+                src=../../../img/uscyber/redact.png class=center
+                style=border-radius:8px width="100%">
+<p>As part of my usual process for dealing with password-protected PDFs, I started by using <b>pdf2john</b> to extract the password hash from the file. With the hash in hand, I turned to <strong>John the Ripper</strong> to crack it. The tool quickly identified the password using a common wordlist.</p>
+
+<p><em>Hashcat</em> is another excellent alternative for this task</p>
+
+            <h3>Image Extraction</h3>
+            <div class=highlight>
+            <p>With the password cracked, I unlocked the PDF and gained access to its contents. Inside, I discovered that the file wasn’t just text, it contained an embedded image.This suggested that the actual flag or hidden data might be concealed within the image itself.</p>
+            </div>
+<p>There are several ways to extract embedded content from a PDF, but I opted for a reliable utility from the <strong>Poppler</strong></p>
+
+<p>Using <code>pdfimages</code>, I first listed all the images embedded in the PDF with the following command:</p>
+<div class=highlight>
+                <pre><code class=language-bash>pdfimages -list redactable.pdf -opw friends4eva
+</code></pre>
+            </div>
+<p>This confirmed the presence of images within the document.</p>
+<p>Next, I extracted them using the appropriate format by running:</p>
+<div class=highlight>
+                <pre><code class=language-bash>pdfimages -j redactable.pdf image -opw friends4eva</code></pre>
+            </div>
+<p>The <b><em>-j</em></b> flag ensures that JPEG-compressed images are extracted in their native format. You can adjust the output extension if needed.</p>
+
+<p>The image extracted from the PDF appeared scrambled, making the content unreadable.</p>
+
+
+            <h3>GIMP Distortion Fix</h3>
+<p>I used GIMP to fix the distorted image.</p>
+<p>Under <b>Filters → Distorts → Whirl and Pinch</b>, I reversed the swirl by adjusting the Whirl slider.</p>
+<p>The image cleared up, and the flag was revealed.</p>
+
+            <table class=image-comparison>
+                <tr>
+                    <th>Before</th>
+                    <th>After</th>
+                </tr>
+                <tr>
+                    <td><img src=../../../img/uscyber/redact2.png width="90%"></td>
+                    <td><img src=../../../img/uscyber/redact3.jpeg width="90%"></td>
+                </tr>
+            </table>
+            <p><strong>Flag:</strong><code>SVUSCG{oops_i_did_it_again_i_didnt_redact}</code></p>
+
+            <!-- ==================== CRYPTO ==================== -->
+            <h2 id=crypto>Gotta Go Low (Crypto)</h2>
+            <img
+                src=../../../img/uscyber/crypto1.png class=center
+                style=border-radius:8px width="50%">
+            <p>The <strong>Gotta Go Low</strong> challenge was a classic RSA crypto puzzle. We were given an <b>encrypt.py</b> script and an encrypted flag, with the goal of reversing the encryption. While reviewing the script, one flaw stood out immediately: the RSA public exponent <b>e</b> was set to <strong>3</strong>. Using such a small exponent without proper padding is a well-known weakness in RSA. It can make the ciphertext vulnerable to simple attacks especially if the message is small enough to avoid modular wrapping.</p>
+
+            <h3>Automated Solution</h3>
+            <p>To recover the plaintext, I crafted a script based on a known low-exponent RSA attack. Once executed, the script successfully computed the plaintext and revealed the flag.</p>
+<img
+                src=../../../img/uscyber/crypto.png class=center
+                style=border-radius:8px width="100%">
+            <p><strong>Flag:</strong><code>SVBGR{l0w_3xp0nent5_@r3_n0t_s@fe}</code></p>
+
+            <!-- ==================== REVERSE ENGINEERING ==================== -->
+            <h2 id=re>CTF Café (Reverse Engineering)</h2>
+   <img
+                src=../../../img/uscyber/cafe.png class=center
+                style=border-radius:8px width="50%">         
+<p>This challenge involved analyzing a 64-bit ELF binary with protections enabled. Through static analysis and decompilation, I identified a hidden function, <b>secret_sauce()</b>, which performed a simple XOR operation to reveal the flag.</p>
+<img
+                src=../../../img/uscyber/cafe1.png class=center
+                style=border-radius:8px width="100%">
+<p>By extracting the encoded data and reversing the logic in Python, I successfully decrypted the flag.</p>
+
+<img
+                src=../../../img/uscyber/cafe2.png class=center
+                style=border-radius:8px width="100%">
+            <p><strong>Flag:</strong><code>SVBGR{d3c0p1l3rs_m4k3_l1f3_34sy}</code></p>
+<p>The hunt continues... See you in the next round • ͜ •</p>
+<img
+                src=../../../img/type.gif class=center
+                style=border-radius:8px width="100%">
+                <div class=pagination>
+                    <div class=pagination__title><span class=pagination__title-h>Read other posts</span>
+                        <hr>
+                    </div>
+                    <div class=pagination__buttons><span class="button previous"><a
+                                href=../NahamconCTF_2025/index.html><span class=button__icon>←</span>
+                                <span class=button__text>NAHAMCON CTF 2025 WRITE UP</span></a></span>
+                        <span class="button next"><a href=.././index.html><span
+                                    class=button__text>cooming soon</span>
+                                <span class=button__icon>→</span></a></span>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <footer class=footer>
+            
+            </div>    
