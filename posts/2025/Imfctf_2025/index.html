@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang=en>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+    <title>IMF CTF Writeup</title>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta name=keywords content>
+    <meta name=robots content="noodp">
+    <link rel=canonical href=index.html>
+    <script
+        type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","../../../../www.google-analytics.com/analytics.js","ga"),ga("create","UA-202973704-2","auto"),ga("send","pageview"))</script>
+    <meta name=twitter:card content="summary_large_image">
+    <meta name=twitter:image content="https://mburu-karanja.github.io/Bl09/img/IMF_CTF/imf-logo.png">
+    <meta name=twitter:title content="IMF CTF Writeup">
+    <meta name=twitter:site content="@your_handle">
+    <link rel=stylesheet href=../../../styles.css>
+    <link rel=stylesheet href=../../../css/style.css>
+    <link rel="shortcut icon" href=../../../img/theme-colors/icon.png>
+    <link rel=apple-touch-icon href=../../../img/theme-colors/icon.png>
+    <meta property="og:locale" content="en">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="IMF CTF Writeup">
+    <meta property="og:url" content="https://mburu-karanja.github.io/Bl09/img/Imf_2025/">
+    <meta property="og:site_name" content>
+    <meta property="og:image" content="https://mburu-karanja.github.io/Bl09/img/Imf_2025/imf-logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+    <meta property="article:published_time" content="2025-07-07 12:17:45 +0300 +0300">
+</head>
+<div id=particles-js></div>
+
+<body class=green>
+    <div class="container center headings--one-size" style=background:#1f222a;z-index:1>
+        <header class=header>
+            <div class=header__inner>
+                <div class=header__logo><a href=../../../index.html>
+                        <div class=logo>cd ~</div>
+                    </a></div>
+                <ul class="menu menu--mobile">
+                    <li class=menu__trigger>Menu&nbsp;▾</li>
+                    <li>
+                        <ul class=menu__dropdown>
+                            <li><a href=../../../about/index.html>About Me</a></li>
+                            <li><a href=../../../all-posts/index.html>All Posts</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <nav class=navigation-menu>
+                <ul class="navigation-menu__inner menu--desktop">
+                    <li><a href=../../../about/index.html>About Me</a></li>
+                    <li><a href=../../../all-posts/index.html>All Posts</a></li>
+            </ul>
+            </nav>
+        </header>
+        <div class=content>
+            <article class=post>
+                <h1 class=post-title><a href=index.html>IMF CTF Writeup</a></h1>
+                <div class=post-meta><time class=post-date>2025-07-07</time></div>
+                <div class=table-of-contents>
+                    <h2>Table of Contents</h2>
+                    <nav id=TableOfContents>
+                        <ul>
+                            <li><a href=#introduction>Introduction</a></li>
+                            <li><a href=#osint1>Sevastopol's Silence (OSINT)</a></li>
+                            <li><a href=#misc1>Finding Sevastopol (Misc)</a></li>
+                            <li><a href=#stego1>Finding Gabriel (Stego)</a></li>
+                            <li><a href=#crypto1>The Final Reckoning (Crypto?)</a></li>
+                            <li><a href=#osint2>Can You Find Me (OSINT)</a></li>
+                        </ul>
+                    </nav>
+                </div><img src=../../../img/imf/imf-logo.png class=post-cover
+                    alt="IMF CTF Writeup" title="Cover Image">
+                <div class=post-content>
+                    <div>
+                        <h2 id=introduction>Introduction<a href=#introduction class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                        <p>Another weekend, another CTF! The Impossible Mission Force challenge brought some interesting puzzles across multiple categories. Here's how I solved five of them:</p>
+
+                        <!-- ===== OSINT CHALLENGE 1 ===== -->
+                        <h2 id=osint1>Sevastopol's Silence (OSINT)</h2>
+<img
+                src=../../../img/Imf_2025/osint.png class=center
+                style=border-radius:8px width="50%">
+            </div>
+
+                        <p>The challenge provided a login page where I identified the username <b>TaylorArtX</b>. A quick Google search revealed their GitHub account.</p>
+<img
+                src=../../../img/Imf_2025/site.png class=center
+                style=border-radius:8px width="80%">
+            </div>
+                        <h3>Email Enumeration</h3>
+                        <p>Using the tool <strong><a href="https://ghintel.secrets.ninja" target="_blank">GitHub Commits Email Finder</a></strong>, I fed in the username and discovered their exposed email address:</p>
+                        <img src=../../../img/Imf_2025/commits.png class=center
+                            style=border-radius:8px width="80%">
+
+                        <p><strong>Flag:</strong><code>IMF{taylorpaints@proton.me}</code></p>
+
+                        <!-- ===== MISC CHALLENGE ===== -->
+                        <h2 id=misc1>Finding Sevastopol (Misc)</h2>
+<img
+                src=../../../img/Imf_2025/misc.png class=center
+                style=border-radius:8px width="50%">
+                        <h3>solution</h3>
+                        <ol>
+                            <li>Identified Morse code in image metadata comments using <em>exiftool</em></li>
+                            <img
+                src=../../../img/Imf_2025/morse1.png class=center
+                style=border-radius:8px width="50%">
+                            <li>Decoded using online Morse decoder to get ASCII ciphertext</li>
+                            <img
+                src=../../../img/Imf_2025/morse.png class=center
+                style=border-radius:8px width="50%">
+                            <li>Ran the ciphertext through <a href="https://www.dcode.fr" target="_blank">dCode.fr</a> cipher identifier and there I get rewarded</li>
+                        </ol>
+
+                        <img src=../../../img/Imf_2025/ascii.png class=center
+                            style=border-radius:8px width="80%">
+
+                        <p><strong>Flag:</strong><code>IMF{Fou7d_th3_P0dk0va}</code></p>
+
+                        <!-- ===== STEGO CHALLENGE ===== -->
+                        <h2 id=stego1>Finding Gabriel (Stego)</h2>
+<img src=../../../img/Imf_2025/steg.png class=center
+                            style=border-radius:8px width="50%">
+                 <h3>Spectral Analysis</h3>
+<p>This was easy peasy, I uploaded the provided audio file to <a href="https://www.dcode.fr" target="_blank">dCode.fr</a> under spectral analysis, the flag was clearly visible in the spectrogram, easy!</p>
+                        <img src=../../../img/Imf_2025/steg1.png class=center
+                            style=border-radius:8px width="80%">
+
+                        <p><strong>Flag:</strong><code>IMF{29.5328_S_29.0000E}</code></p>
+
+                        <!-- ===== "CRYPTO" CHALLENGE ===== -->
+                        <h2 id=crypto1>The Final Reckoning (Crypto?)</h2>
+<img src=../../../img/Imf_2025/crypto.png class=center
+                            style=border-radius:8px width="50%">
+                        <p>Despite being in the crypto category, standard cryptographic analysis yielded nothing, the PNG file appeared normal</p>
+
+                        <p>Using <strong>Aperi'Solve</strong> online steganalysis tool revealed the flag in the blue channel (LSB analysis)</p>
+                        <img src=../../../img/Imf_2025/blue.png class=center
+                            style=border-radius:8px width="50%">
+
+                        <div class=callout>
+                            <p>well, this challenge was clearly miscategorized as it required steganographic techniques rather than cryptographic analysis. The flag was embedded using LSB (Least Significant Bit) steganography in the blue channel of the image.</p>
+                        </div>
+
+                        <p><strong>Flag:</strong><code>IMF{Th3_Ent1ty_1s_1n3v1tabl3}</code></p>
+
+                        <!-- ===== OSINT CHALLENGE 2 ===== -->
+                        <h2 id=osint2>Can You Find Me (OSINT)</h2>
+<img src=../../../img/Imf_2025/taylor.png class=center
+                            style=border-radius:8px width="50%">
+
+                        <p>Here we were provided with a zip file tried extracting it but was password protected, so I opt for a brute force using <b>john the ripper</b> since it's easy and fast.</p>
+                       <img src=../../../img/Imf_2025/zip.png class=center
+                            style=border-radius:8px width="80%"> 
+                        <p>Inside the extracted <b>untitled.txt</b>, was a link that led to a webpage</p>
+                        <img src=../../../img/Imf_2025/link.png class=center
+                            style=border-radius:8px width="80%">
+ <p> On the comments of the page was a string character with some coordinates, following the challenge description, we craft the flag</p>
+<img src=../../../img/Imf_2025/coordinates.png class=center
+                            style=border-radius:8px width="80%">
+
+                        <p><strong>Flag:</strong><code>IMF{37.7833 N, 122.4167 W}</code></p>
+
+                        <p>H4ppy H4ckin6... GG ^ ͜ 0</p>
+<img
+                src=../../../img/aniyuki-oshi-no-ko.gif class=center
+                style=border-radius:8px width="100%">
+                <div class=pagination>
+                    <div class=pagination__title><span class=pagination__title-h>Read other posts</span>
+                        <hr>
+                    </div>
+                    <div class=pagination__buttons><span class="button previous"><a
+                                href=../USCybergame_2025/index.html><span class=button__icon>←</span>
+                                <span class=button__text>US CYBERGAMES CTF 2025 WRITE UP</span></a></span>
+                        <span class="button next"><a href=.././index.html><span
+                                    class=button__text>cooming soon</span>
+                                <span class=button__icon>→</span></a></span>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <footer class=footer>
+            
+            </div>    
+
