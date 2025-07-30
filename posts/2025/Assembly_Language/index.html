@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang=en>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+    <title>x86 Assembly</title>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta name=keywords content>
+    <meta name=robots content="noodp">
+    <link rel=canonical href=index.html>
+    <script
+        type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","../../../../www.google-analytics.com/analytics.js","ga"),ga("create","UA-202973704-2","auto"),ga("send","pageview"))</script>
+    <meta name=twitter:card content="summary_large_image">
+    <meta name=twitter:image content="https://https://mburu-karanja.github.io/Bl09/img/x86 Assembly/Assembly.png">
+    <meta name=twitter:title content="x86 Assembly">
+    <meta name=twitter:site content="@mburu_karanja_">
+    <link rel=stylesheet href=../../../styles.css>
+    <link rel=stylesheet href=../../../css/style.css>
+    <link rel="shortcut icon" href=../../../img/theme-colors/icon.png>
+    <link rel=apple-touch-icon href=../../../img/theme-colors/icon.png>
+    <meta property="og:locale" content="en">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="x86 Assembly">
+    <meta property="og:url" content="https://mburu-karanja.github.io/Bl09/img/x86 Assembly/">
+    <meta property="og:site_name" content>
+    <meta property="og:image" content="https://mburu-karanja.github.io/Bl09/img/x86 Assembly/Assembly.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+    <meta property="article:published_time" content="2025-04-01 12:17:45 +0300 +0300">
+</head>
+<div id=particles-js></div>
+
+<body class=green>
+    <div class="container center headings--one-size" style=background:#1f222a;z-index:1>
+        <header class=header>
+            <div class=header__inner>
+                <div class=header__logo><a href=../../../index.html>
+                        <div class=logo>cd ~</div>
+                    </a></div>
+                <ul class="menu menu--mobile">
+                    <li class=menu__trigger>Menu&nbsp;▾</li>
+                    <li>
+                        <ul class=menu__dropdown>
+                            <li><a href=../../../about/index.html>About Me</a></li>
+                            <li><a href=../../../all-posts/index.html>All Posts</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <nav class=navigation-menu>
+                <ul class="navigation-menu__inner menu--desktop">
+                    <li><a href=../../../about/index.html>About Me</a></li>
+                    <li><a href=../../../all-posts/index.html>All Posts</a></li>
+            </ul>
+            </nav>
+        </header>
+<div id=particles-js></div>
+
+<body class=green>
+    <div class="container center headings--one-size" style=background:#1f222a;z-index:1>
+        <header class=header>
+            <div class=header__inner>
+                <div class=header__logo><a href=../../../index.html>
+                        <div class=logo>cd ~</div>
+                    </a></div>
+            </div>
+        </header>
+        <div class=content>
+            <article class=post>
+                <h1 class=post-title><a href=index.html>Mastering x86 Disassembly - Part 2</a></h1>
+                <div class=post-meta><time class=post-date>2025-04-15</time></div>
+                <div class=table-of-contents>
+                    <h2>Table of Contents</h2>
+                    <nav id=TableOfContents>
+                        <ul>
+                            <li><a href=#recap>Quick Recap</a></li>
+                            <li><a href=#functions>Functions and Stack Frames</a></li>
+                            <li><a href=#calling>Calling Conventions</a></li>
+                            <li><a href=#memory>Memory Operations</a></li>
+                            <li><a href=#analysis>Practical Analysis</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <img src=../../../img/x86_Assembly/Assembly.png class=post-cover alt="x86 Disassembly Part 2" title="Cover Image">
+
+                <h2 id=recap>Quick Recap<a href=#recap class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>In Part 1, we covered the fundamentals of x86 disassembly - registers, basic instructions, control flow, and how malware uses APIs. Now we're diving deeper into the mechanics that make assembly both powerful and challenging to analyze.</p>
+                
+                <p>Think of this as moving from learning vocabulary to understanding grammar. We'll explore how functions really work at the machine level, how data moves between memory and registers, and how to spot malicious patterns in real disassembly.</p>
+
+                <h2 id=functions>Functions and Stack Frames<a href=#functions class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>Functions in assembly don't have nice parentheses or clearly defined parameters like in high-level languages. Instead, they follow a strict dance of stack manipulation that we need to understand.</p>
+
+                <h3>The Stack Frame Lifecycle</h3>
+                <p>Every function typically follows this pattern:</p>
+                
+                <div class="highlight">
+                    <pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<code class=language-asm data-lang=asm>
+<span style=color:#75715e>; Prologue</span>
+<span style=color:#a6e22e>push</span> <span style=color:#f92672>ebp</span>       <span style=color:#75715e>; Save the caller's base pointer</span>
+<span style=color:#a6e22e>mov</span> <span style=color:#f92672>ebp</span>, <span style=color:#f92672>esp</span>  <span style=color:#75715e>; Set our new base pointer</span>
+<span style=color:#a6e22e>sub</span> <span style=color:#f92672>esp</span>, <span style=color:#ae81ff>0x10</span>  <span style=color:#75715e>; Allocate space for local variables</span>
+
+<span style=color:#75715e>; Function body here</span>
+
+<span style=color:#75715e>; Epilogue</span>
+<span style=color:#a6e22e>mov</span> <span style=color:#f92672>esp</span>, <span style=color:#f92672>ebp</span>  <span style=color:#75715e>; Deallocate locals</span>
+<span style=color:#a6e22e>pop</span> <span style=color:#f92672>ebp</span>       <span style=color:#75715e>; Restore caller's base pointer</span>
+<span style=color:#a6e22e>ret</span>          <span style=color:#75715e>; Return to caller</span>
+</code></pre>
+                </div>
+
+                <p>This creates what we call a <b>stack frame</b> - a self-contained workspace for the function's variables and operations. Here's what it looks like in memory:</p>
+
+                <img src=../../../img/x86_Assembly/stack.png class=center style=border-radius:8px width="70%">
+
+                <h3>Accessing Arguments and Locals</h3>
+                <p>Parameters and local variables are accessed relative to EBP:</p>
+                
+                <ul>
+                    <li><code>[ebp+8]</code> - First argument</li>
+                    <li><code>[ebp+12]</code> - Second argument</li>
+                    <li><code>[ebp-4]</code> - First local variable</li>
+                </ul>
+
+                <p>When you see patterns like these, you're looking at a function accessing its inputs and workspace.</p>
+
+                <h2 id=calling>Calling Conventions<a href=#calling class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>Calling conventions define how functions receive parameters and return values. Malware analysts need to recognize these patterns to track data flow.</p>
+
+                <h3>CDECL (C Declaration)</h3>
+                <p>The most common convention in x86:</p>
+                <ul>
+                    <li>Caller pushes arguments right-to-left</li>
+                    <li>Caller cleans up the stack after</li>
+                    <li>Return value in EAX</li>
+                </ul>
+
+                <div class="highlight">
+                    <pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<code class=language-asm data-lang=asm>
+<span style=color:#75715e>; Calling a CDECL function</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>3</span>        <span style=color:#75715e>; Second argument</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>7</span>        <span style=color:#75715e>; First argument</span>
+<span style=color:#a6e22e>call</span> <span style=color:#f92672>add_numbers</span>
+<span style=color:#a6e22e>add</span> <span style=color:#f92672>esp</span>, <span style=color:#ae81ff>8</span>  <span style=color:#75715e>; Clean up stack</span>
+</code></pre>
+                </div>
+
+                <h3>STDCALL</h3>
+                <p>Common in Windows APIs:</p>
+                <ul>
+                    <li>Arguments pushed right-to-left</li>
+                    <li>Callee cleans up the stack</li>
+                    <li>Return value in EAX</li>
+                </ul>
+
+                <p>You'll see this in Windows DLL calls:</p>
+                <div class="highlight">
+                    <pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<code class=language-asm data-lang=asm>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0</span>        <span style=color:#75715e>; NULL</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0</span>        <span style=color:#75715e>; NULL</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0</span>        <span style=color:#75715e>; 0 bytes to write</span>
+<span style=color:#a6e22e>push</span> <span style=color:#f92672>buffer</span>   <span style=color:#75715e>; Our data buffer</span>
+<span style=color:#a6e22e>call</span> <span style=color:#f92672>WriteFile</span>  <span style=color:#75715e>; STDCALL - callee cleans up</span>
+</code></pre>
+                </div>
+
+                <h2 id=memory>Memory Operations<a href=#memory class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>Malware frequently manipulates memory - allocating space, writing shellcode, or modifying existing structures. Here are key patterns to recognize:</p>
+
+                <h3>Memory Allocation</h3>
+                <p>Windows APIs for memory operations:</p>
+                <div class="highlight">
+                    <pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<code class=language-asm data-lang=asm>
+<span style=color:#75715e>; Typical VirtualAlloc pattern</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x40</span>      <span style=color:#75715e>; PAGE_EXECUTE_READWRITE</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x1000</span>    <span style=color:#75715e>; MEM_COMMIT</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x1000</span>    <span style=color:#75715e>; Allocation size</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0</span>        <span style=color:#75715e>; NULL (let system decide location)</span>
+<span style=color:#a6e22e>call</span> <span style=color:#f92672>VirtualAlloc</span>
+</code></pre>
+                </div>
+
+                <p>Seeing this in malware often indicates:</p>
+                <ul>
+                    <li>Space being prepared for shellcode</li>
+                    <li>Memory being made executable (red flag!)</li>
+                    <li>Evasion of static analysis</li>
+                </ul>
+
+                <h3>String Manipulation</h3>
+                <p>Malware needs to work with strings (file paths, URLs, commands). Common instructions:</p>
+                <div class="highlight">
+                    <pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<code class=language-asm data-lang=asm>
+<span style=color:#a6e22e>mov</span> <span style=color:#f92672>edi</span>, <span style=color:#f92672>buffer</span>  <span style=color:#75715e>; Destination</span>
+<span style=color:#a6e22e>mov</span> <span style=color:#f92672>esi</span>, <span style=color:#f92672>string_data</span>  <span style=color:#75715e>; Source</span>
+<span style=color:#a6e22e>mov</span> <span style=color:#f92672>ecx</span>, <span style=color:#ae81ff>length</span>  <span style=color:#75715e>; Counter</span>
+<span style=color:#a6e22e>rep</span> <span style=color:#a6e22e>movsb</span>       <span style=color:#75715e>; Copy ECX bytes from ESI to EDI</span>
+</code></pre>
+                </div>
+
+                <p>This is how malware might build a file path or URL in memory before using it.</p>
+
+                <h2 id=analysis>Practical Analysis<a href=#analysis class=hanchor arialabel=Anchor>&#8983;</a></h2>
+                <p>Let's put this knowledge to work analyzing a real malware snippet:</p>
+
+                <div class="highlight">
+                    <pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4>
+<code class=language-asm data-lang=asm>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0</span>                <span style=color:#75715e>; Step 1: Push arguments for LoadLibraryA</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x6165722E</span>       <span style=color:#75715e>; ".rea"</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x646C756F</span>       <span style=color:#75715e>; "ould"</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x682E3233</span>       <span style=color:#75715e>; "32.h"</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x72657375</span>       <span style=color:#75715e>; "user"</span>
+<span style=color:#a6e22e>mov</span> <span style=color:#f92672>eax</span>, <span style=color:#f92672>esp</span>        <span style=color:#75715e>; EAX now points to "user32.hould.rea"</span>
+<span style=color:#a6e22e>push</span> <span style=color:#f92672>eax</span>
+<span style=color:#a6e22e>call</span> <span style=color:#f92672>LoadLibraryA</span>   <span style=color:#75715e>; Step 2: Load the DLL</span>
+
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x646E6148</span>       <span style=color:#75715e>; Step 3: Push "Hand"</span>
+<span style=color:#a6e22e>push</span> <span style=color:#ae81ff>0x6C654D6F</span>       <span style=color:#75715e>; "oMel"</span>
+<span style=color:#a6e22e>mov</span> <span style=color:#f92672>ebx</span>, <span style=color:#f92672>esp</span>        <span style=color:#75715e>; EBX points to "oMelHand"</span>
+<span style=color:#a6e22e>push</span> <span style=color:#f92672>ebx</span>
+<span style=color:#a6e22e>push</span> <span style=color:#f92672>eax</span>
+<span style=color:#a6e22e>call</span> <span style=color:#f92672>GetProcAddress</span> <span style=color:#75715e>; Step 4: Get "MessageBoxA" address</span>
+</code></pre>
+                </div>
+
+                <p>What's happening here:</p>
+                <ol>
+                    <li>The malware builds "user32.dll" on the stack in chunks (reversed due to little-endian)</li>
+                    <li>Loads the library dynamically (avoids static imports)</li>
+                    <li>Builds "MessageBoxA" string in similar fashion</li>
+                    <li>Gets the function address for later use</li>
+                </ol>
+
+                <p>This is classic <b>dynamic API resolution</b> - a hallmark of sophisticated malware trying to evade static analysis.</p>
+
+                <h3>Key Takeaways</h3>
+                <ul>
+                    <li>Stack manipulation is how functions create their workspace</li>
+                    <li>Calling conventions dictate argument passing and cleanup</li>
+                    <li>Memory operations reveal how malware stores and accesses data</li>
+                    <li>Dynamic API resolution is a major red flag</li>
+                </ul>
+
+                <p> Remember - practice is key. The more you analyze, the more patterns you'll recognize.</p>
+
+                <p>Happy reversing</p>
+            </article>
+        </div>
+    </div>
+</body>
+<div class=pagination>
+    <div class=pagination__title><span class=pagination__title-h>Read other posts</span>
+        <hr>
+    </div>
+    <div class=pagination__buttons><span class="button previous"><a
+                href=../Imfctf_2025/index.html><span class=button__icon>←</span>
+                <span class=button__text>IMF CTF WRITEUP</span></a></span>
+        <span class="button next"><a href=.././index.html><span
+                    class=button__text>coming soon</span>
+                <span class=button__icon>→</span></a></span>
+    </div>
+</div>
+</article>
+</div>
+</html>

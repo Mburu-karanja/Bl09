@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+    <title>x86 Assembly</title>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta name=keywords content>
+    <meta name=robots content="noodp">
+    <link rel=canonical href=index.html>
+    <script
+        type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","../../../../www.google-analytics.com/analytics.js","ga"),ga("create","UA-202973704-2","auto"),ga("send","pageview"))</script>
+    <meta name=twitter:card content="summary_large_image">
+    <meta name=twitter:image content="https://https://mburu-karanja.github.io/Bl09/img/x86 Assembly/x86 Assembly.png">
+    <meta name=twitter:title content="x86 Assembly">
+    <meta name=twitter:site content="@mburu_karanja_">
+    <link rel=stylesheet href=../../../styles.css>
+    <link rel=stylesheet href=../../../css/style.css>
+    <link rel="shortcut icon" href=../../../img/theme-colors/icon.png>
+    <link rel=apple-touch-icon href=../../../img/theme-colors/icon.png>
+    <meta property="og:locale" content="en">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="x86 Assembly">
+    <meta property="og:url" content="https://mburu-karanja.github.io/Bl09/img/x86 Assembly/">
+    <meta property="og:site_name" content>
+    <meta property="og:image" content="https://mburu-karanja.github.io/Bl09/img/x86 Assembly/x86 Assembly.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="627">
+    <meta property="article:published_time" content="2025-04-01 12:17:45 +0300 +0300">
+</head>
+<div id=particles-js></div>
+
+<body class=green>
+    <div class="container center headings--one-size" style=background:#1f222a;z-index:1>
+        <header class=header>
+            <div class=header__inner>
+                <div class=header__logo><a href=../../../index.html>
+                        <div class=logo>cd ~</div>
+                    </a></div>
+                <ul class="menu menu--mobile">
+                    <li class=menu__trigger>Menu&nbsp;▾</li>
+                    <li>
+                        <ul class=menu__dropdown>
+                            <li><a href=../../../about/index.html>About Me</a></li>
+                            <li><a href=../../../all-posts/index.html>All Posts</a></li>
+                            
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <nav class=navigation-menu>
+                <ul class="navigation-menu__inner menu--desktop">
+                    <li><a href=../../../about/index.html>About Me</a></li>
+                    <li><a href=../../../all-posts/index.html>All Posts</a></li>
+            </ul>
+            </nav>
+        </header>
+<div class="content">
+    <article class="post">
+        <h1 class="post-title"><a href="index.html">x86 ASSEMBLY LANGUAGE</a></h1>
+        <div class="post-meta"><time class="post-date">2025-07-23</time></div>
+        <div class="table-of-contents">
+
+        </div>
+        <img src=../../../img/x86_Assembly/Assembly.png class=post-cover alt="x86 Disassembly Part 2" title="Cover Image">
+<body>
+    <h1 class="center">x86 Assembly: A Beginner's Guide to Disassembly</h1>
+    
+    <p>This article is not just a tutorial. It's a story, a guided tour through the roads of memory addresses, and instructions, narrated by someone who once thought EAX was a new Bollywood remix track. Whether you're a cybersecurity fresher, a curious engineer, or just someone who clicked this article while avoiding Jira tasks, this is for you.</p>
+
+    <h2>TL;DR</h2>
+    <ul>
+        <li>x86 Assembly is foundational to understanding how software, including malware, truly behaves under the hood. It reveals the "what" and "how" behind every action taken at runtime.</li>
+        <li>Registers act as temporary storage; critical for data movement, operations, and function logic. Knowing how general-purpose and special-purpose registers work unlocks your ability to trace the program's logic.</li>
+        <li>Memory addressing and stack operations (using PUSH, POP, CALL, and RET) are crucial to understanding program flow, especially in analyzing exploits, shellcode, or reverse-engineered binaries.</li>
+        <li>Function calls and the calling convention help trace arguments, returns, and stack frames. This knowledge is invaluable when debugging or analyzing control transfers within a binary.</li>
+        <li>Common instructions like MOV, ADD, SUB, and logical/bitwise operations form the building blocks of logic inside malware and benign software alike.</li>
+        <li>Control flow instructions such as JMP, CALL, and conditional jumps (JZ, JNZ, etc.) allow binaries to make decisions. Malware uses these heavily for logic branching and evasion.</li>
+        <li>Strings, APIs, and imports offer early behavioral indicators. Functions like VirtualAlloc, CreateFile, or connect often hint at intentions such as persistence, execution, or communication.</li>
+        <li>Dynamic API resolution and obfuscation techniques are commonly used to evade static detection.</li>
+    </ul>
+
+    <h2>Introduction</h2>
+    <p>Well, in the 'Malware Analysis', the x86 disassembly is your weapon, which you should know how to use before stepping onto the battlefield. Modern threats are hard to detect in plain sight; they hide behind compiled binaries, layers of obfuscation, and packing techniques that strip away all visible traces of high-level logic.</p>
+
+    <p>All we have is raw machine code ... unreadable to the average eye, but a rich source of behavioral insight to those who understand it.</p>
+
+
+    <p>Disassembly is the process of "converting binary instructions into human-readable assembly code". This is often the first step in reverse engineering, where analysts attempt to reconstruct the original logic of a program without access to its source code. Tools like IDA Pro, Ghidra, and OllyDbg help make sense of this low-level code by revealing instruction flow, memory access patterns, and API calls. (I know it has already started sounding like some quantum mechanics, but bear with me, it's real fun)</p>
+
+    <p>This article aims to break down the fundamentals of x86 disassembly in a structured, beginner-friendly way, along with clarity, precision, and practical context. Whether you're just entering the world of reverse engineering or revisiting the basics to sharpen your skills, this guide will help you build a strong foundation in reading and understanding disassembled code.</p>
+
+    <h2>1. What is Disassembly?</h2>
+    <p>Every journey into malware analysis eventually lands you in front of a disassembler: a tool that doesn't speak the language of Python, Java, or C. It speaks assembly. And your job? To translate :)</p>
+
+    <p>"Disassembly is the act of converting machine code"</p>
+
+    <p>It is converting those raw binary instructions stored inside executable files, into assembly language, a more readable, symbolic representation of what the CPU actually executes. Unlike high-level programming languages that offer loops, variables, and classes, assembly speaks in registers, opcodes, and addresses. It may look cryptic at first glance, but it holds the truth of what a program actually does.</p>
+
+    <h3>1.1 What Exactly Is Happening When We "Disassemble"?</h3>
+    <p>When a program is compiled (say, written in C or C++), all its human-readable code is translated into machine code. The sequences of bytes that a processor understands and executes. This machine code is packed into an executable format like .exe or .dll.</p>
+
+    <p>A disassembler takes these binary instructions and reverses them into their assembly counterparts. However, it's not a perfect reversal; the names of variables, functions, or comments are long gone, but the structure and logic are still intact, just in a much lower-level form.</p>
+
+    <p>Take this simple C code:</p>
+    <pre><code>int sum = a + b;</code></pre>
+    <p>After disassembly, it might look like:</p>
+    <pre><code>mov eax, [ebp+8]   ; load variable a
+add eax, [ebp+12]  ; add variable b</code></pre>
+
+    <h3>1.2 Why Does Disassembly Matter in Malware Analysis?</h3>
+    <p>Most malware is distributed as compiled binaries. There is no source code to audit, no GitHub repo to dig into. What you're left with is a file that needs to be reversed, and disassembly is the very first lens through which its behavior becomes visible.</p>
+
+    <p>Here's what disassembly allows you to do:</p>
+    <ul>
+        <li>Reveal control flow: You can see how functions are called and how decisions (like if/else) are made.</li>
+        <li>Detect malicious behavior: Identify file access, network connections, and registry modifications.</li>
+        <li>Understand obfuscation: Spot when the malware is trying to hide what it's doing using packing or encryption.</li>
+        <li>Find payloads: Navigate to hidden code blocks and understand how they are executed.</li>
+    </ul>
+
+    <p>In short, it strips away the user-facing behavior and exposes the real intent of the code.</p>
+
+    <h3>1.3 A Glimpse of What You Might See</h3>
+    <p>Let's look at an example. Here's a snippet from a disassembled binary:</p>
+    <pre><code>push ebp
+mov ebp, esp
+sub esp, 0x10
+mov eax, [ebp+8]
+call eax</code></pre>
+    <p>To someone new, it may look like noise. But an analyst reads this like a paragraph:</p>
+    <ol>
+        <li>Set up the stack frame.</li>
+        <li>Reserve space on the stack.</li>
+        <li>Fetch a function pointer passed as an argument.</li>
+        <li>Call it dynamically.</li>
+    </ol>
+    <p>This is a classic signature of indirect function calls, something malware authors use to evade detection and resolve APIs dynamically at runtime.</p>
+
+    <p>Don't worry if it doesn't make sense to you now, it will make sense later. You're reading this article to get rid of those scary PUSH, MOV monsters, right? Just Keep Reading.</p>
+
+    <h3>1.4 The First Step Toward Seeing Clearly</h3>
+    <p>Disassembly is not about memorizing every instruction. It's about developing a mindset .... learning to trace logic, recognize patterns, and ask the right questions.
+    You begin to move from "What does this do?" to "Why is it doing this?", and eventually, "What is it trying to hide?"</p>
+
+    <p>The more you practice, the clearer things become. What once looked like hex and chaos starts to resemble method and design. Disassembly is where the veil begins to lift. It's where curiosity turns into investigation and investigation into insight.</p>
+
+    <h2>2. Assembly Language Basics</h2>
+    <p>Before diving deeper into disassembly, it's crucial to understand the language that disassemblers speak ... "The Assembly". Think of it as the middle ground between raw binary and human-readable code. It might look intimidating at first, but once you get hold of it, you will start observing patterns.</p>
+
+    <p>To help simplify this, we'll break down assembly into bite-sized concepts.</p>
+
+    <h3>2.1 Registers: The CPU's Working Desk</h3>
+    <p>Registers are like fast-access notepads inside the CPU. Instead of going to RAM for every single operation (which is slower), the CPU uses registers to store data temporarily while it's working.</p>
+
+    <p>Here are the common general-purpose registers in x86:</p>
+    <table>
+        <tr>
+            <th>Register</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>EAX</td>
+            <td>Accumulator – for arithmetic ops</td>
+        </tr>
+        <tr>
+            <td>EBX</td>
+            <td>Base – often used for addressing</td>
+        </tr>
+        <tr>
+            <td>ECX</td>
+            <td>Counter – used in loops</td>
+        </tr>
+        <tr>
+            <td>EDX</td>
+            <td>Data – used in I/O operations</td>
+        </tr>
+        <tr>
+            <td>ESI</td>
+            <td>Source Index – used in array ops</td>
+        </tr>
+        <tr>
+            <td>EDI</td>
+            <td>Destination Index – for string ops</td>
+        </tr>
+        <tr>
+            <td>ESP</td>
+            <td>Stack Pointer – points to top of the stack</td>
+        </tr>
+        <tr>
+            <td>EBP</td>
+            <td>Base Pointer – used to access function parameters</td>
+        </tr>
+    </table>
+    <p>You'll see these over and over again, so consider this as your vocabulary list.</p>
+
+    <h3>2.2 Instructions — The Action Verbs</h3>
+    <p>Assembly programs are made of instructions. Each instruction tells the CPU to perform a specific operation.</p>
+
+    <p>Here are some common ones:</p>
+    <table>
+        <tr>
+            <th>Instruction</th>
+            <th>Meaning</th>
+        </tr>
+        <tr>
+            <td>MOV</td>
+            <td>Move data from one place to another</td>
+        </tr>
+        <tr>
+            <td>PUSH</td>
+            <td>Place data onto the stack</td>
+        </tr>
+        <tr>
+            <td>POP</td>
+            <td>Remove data from the stack</td>
+        </tr>
+        <tr>
+            <td>CALL</td>
+            <td>Call a function</td>
+        </tr>
+        <tr>
+            <td>RET</td>
+            <td>Return from a function</td>
+        </tr>
+        <tr>
+            <td>ADD/SUB</td>
+            <td>Arithmetic operations</td>
+        </tr>
+        <tr>
+            <td>JMP</td>
+            <td>Jump to another address</td>
+        </tr>
+        <tr>
+            <td>CMP</td>
+            <td>Compare two values</td>
+        </tr>
+        <tr>
+            <td>JZ/JNZ</td>
+            <td>Jump if zero / not zero</td>
+        </tr>
+    </table>
+
+    <p>Example:</p>
+    <pre><code>mov eax, 5
+add eax, 3</code></pre>
+    <p>This loads the value 5 into the EAX register, then adds 3 to it, resulting in EAX = 8.</p>
+
+    <p>Simple, right? It's like math with variables, just very close to the metal.</p>
+
+    <h3>2.3 The Stack — Function Calls and Local Variables</h3>
+    <p>The stack is a Last-In-First-Out (LIFO) structure used to manage function calls and local data. Think of it like a pile of clothes or a stack of books kept upon one another — last in, first out.</p>
+
+    <p class="center"><em>The x86 Layout [Source: Practical Malware Analysis]</em></p>
+
+    <p>So here is what happens when a function is called:</p>
+    <ol>
+        <li>The return address is pushed onto the stack.</li>
+        <li>Local variables are created by subtracting from the stack pointer (ESP).</li>
+        <li>Parameters are accessed relative to the base pointer (EBP).</li>
+    </ol>
+
+    <p>Here's a classic function setup:</p>
+    <pre><code>push ebp
+mov ebp, esp
+sub esp, 0x10</code></pre>
+    <p>This is setting up the stack frame, a standard practice in almost every function in a program.</p>
+
+    <h3>2.4 Memory Access: Addressing the Data</h3>
+    <p>Assembly can work with memory using pointers and offsets.</p>
+
+    <p>Example:</p>
+    <pre><code>mov eax, [ebp+8]</code></pre>
+    <p>This means:</p>
+    <p>Get the value stored at the memory location ebp + 8 and store it in eax.</p>
+
+    <p>There are different ways assembly can access memory:</p>
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>Syntax</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Direct</td>
+            <td>mov eax, [0x401000]</td>
+            <td>Access a fixed memory location</td>
+        </tr>
+        <tr>
+            <td>Register indirect</td>
+            <td>mov eax, [ebx]</td>
+            <td>Access memory at address stored in ebx</td>
+        </tr>
+        <tr>
+            <td>Base + Offset</td>
+            <td>mov eax, [ebp+8]</td>
+            <td>Common in function stack frames</td>
+        </tr>
+        <tr>
+            <td>Indexed</td>
+            <td>mov eax, [ebx+ecx*4]</td>
+            <td>Used for arrays or looped data access</td>
+        </tr>
+    </table>
+    <p>This is commonly how arguments passed to a function are accessed.</p>
+
+    <h3>2.5 Decision Making in Assembly</h3>
+    <p>Unlike high-level languages that use if and else, assembly uses combinations of CMP (compare) and Jxx (jump) instructions.</p>
+
+    <p>Example:</p>
+    <pre><code>cmp eax, 0
+je  label</code></pre>
+    <p>Reads like:</p>
+    <p>Compare eax with 0. If equal, jump to label</p>
+
+    <p>This is how conditions are implemented and how malware decides what code to run under what circumstances.</p>
+
+    <h3>2.6 Understanding Function Calls in x86 Assembly</h3>
+    <p>In x86 assembly, function calls may seem verbose compared to high-level languages, but the underlying logic is methodical and predictable. Function calls use the CALL and RET instructions. The call instruction is the primary way to invoke a function in x86.</p>
+
+    <p>It does two important things:</p>
+    <ol>
+        <li>Pushes the address of the next instruction (i.e., return address) onto the stack.</li>
+        <li>Jumps to the target function's address.</li>
+    </ol>
+
+    <p>Example: CALL 0x401000</p>
+
+    <p>This jumps to the address 0x401000 and saves the return address on the stack. Once the function is done, it executes ret to go back to where it came from.</p>
+
+    <p>Malware often uses indirect calls call eax</p>
+
+    <p>This means the actual function address is stored in eax, making it harder to statically analyze.</p>
+
+    <h2>3. Instructions: MOV, PUSH, POP</h2>
+    <p>When you begin analyzing x86 assembly, some instructions appear so frequently that they become the natural starting point for learning. Among them, MOV, PUSH, and POP are essential. These instructions handle how data is moved around between registers, memory, and the stack.</p>
+
+    <h3>3.1 MOV</h3>
+    <p>The MOV instruction is used to copy data from one location to another. It doesn't move in the traditional sense (like deleting from source), but rather duplicates the value.</p>
+
+    <p>Examples:</p>
+    <pre><code>mov eax, 5           ; Copy the value 5 into the eax register
+mov ebx, eax         ; Copy the value from eax into ebx
+mov [ebp-4], eax     ; Store eax's value into a local variable
+mov eax, [ebp+8]     ; Load the value from memory (typically a function argument)</code></pre>
+
+    <p>Key Points:</p>
+    <ul>
+        <li>The source stays unchanged.</li>
+        <li>You can't directly copy from memory to memory.</li>
+        <li>It's used for data transfer between registers, memory, and constants.</li>
+    </ul>
+
+    <h3>3.2 PUSH</h3>
+    <p>PUSH adds a value to the top of the stack and adjusts the stack pointer accordingly.</p>
+
+    <p>Example:</p>
+    <pre><code>push eax</code></pre>
+    <p>This saves the current value of eax onto the stack. It's useful when a function is about to change a register and needs to preserve its original value.
+    In reverse engineering, spotting a PUSH before a CALL tells you that data (often a function argument) is being prepared.</p>
+
+    <h3>3.3 POP</h3>
+    <p>POP is the counterpart to PUSH. It takes the top value from the stack and places it into a register or memory location.</p>
+
+    <p>Example:</p>
+    <pre><code>pop eax</code></pre>
+    <p>This pulls the last pushed value from the stack into eax. After this, ESP is increased by 4, effectively removing the value from the stack.</p>
+
+    <p>POP is commonly seen:</p>
+    <ul>
+        <li>At the end of a function to restore register values.</li>
+        <li>During cleanup after a function call.</li>
+    </ul>
+
+    <h3>3.4 Arithmetic</h3>
+    <p>This summarises some other instructions.</p>
+    <table>
+        <tr>
+            <th>Instruction</th>
+            <th>Syntax</th>
+            <th>Effect / Description</th>
+        </tr>
+        <tr>
+            <td>ADD</td>
+            <td>add reg, value</td>
+            <td>Adds the value to the register.</td>
+        </tr>
+        <tr>
+            <td>SUB</td>
+            <td>sub reg, value</td>
+            <td>Subtracts the value from the register.</td>
+        </tr>
+        <tr>
+            <td>INC</td>
+            <td>inc reg</td>
+            <td>Increments the register by 1 (equivalent to add reg, 1).</td>
+        </tr>
+        <tr>
+            <td>DEC</td>
+            <td>dec reg</td>
+            <td>Decrements the register by 1 (equivalent to sub reg, 1).</td>
+        </tr>
+        <tr>
+            <td>NEG</td>
+            <td>neg reg</td>
+            <td>Changes the sign of the value (e.g., eax = -eax).</td>
+        </tr>
+        <tr>
+            <td>CMP</td>
+            <td>cmp reg, value</td>
+            <td>Subtracts value from register *only to set flags*, not store.</td>
+        </tr>
+    </table>
+
+    <h2>4. Control Flow</h2>
+    <p>In high-level languages, you're used to if, else, while, and for. In assembly, these friendly structures are replaced by jumps, flags, and comparisons. Control flow instructions define the logic and decisions of a program. When you're analyzing malware, these instructions tell you how it hides, loops, and executes conditionally.</p>
+
+    <h3>4.1 Unconditional Jumps: JMP</h3>
+    <p>Syntax: jmp destination</p>
+    <p>This instruction tells the CPU to jump to a new memory address without checking any condition.
+    Think of it as a "go-to" without a second thought.</p>
+    <p>Example:</p>
+    <pre><code>jmp 0x401050</code></pre>
+    <p>This will shift the control straight to the address 0x401050, ignoring what comes next.</p>
+
+    <p>Malware often uses jmp to skip over detection code or to hop into a payload region.</p>
+
+    <h3>4.2 Conditional Jumps: JE, JNE, JG, JL, etc.</h3>
+    <p>These instructions check the status flags (set by previous operations like cmp) and jump only if conditions match.</p>
+    <table>
+        <tr>
+            <th>Instruction</th>
+            <th>Meaning</th>
+            <th>Condition</th>
+        </tr>
+        <tr>
+            <td>je/jz</td>
+            <td>Jump if Equal/Zero</td>
+            <td>ZF=1 (Zero flag is set)</td>
+        </tr>
+        <tr>
+            <td>jne/jnz</td>
+            <td>Jump if Not Equal/Not Zero</td>
+            <td>ZF=0</td>
+        </tr>
+        <tr>
+            <td>jg/jnle</td>
+            <td>Jump if Greater</td>
+            <td>ZF=0,SF=OF</td>
+        </tr>
+        <tr>
+            <td>jl/jnge</td>
+            <td>Jump if Less.</td>
+            <td>SF≠OF</td>
+        </tr>
+        <tr>
+            <td>ja</td>
+            <td>Jump if Above(unsigned)</td>
+            <td>CF=0,ZF=0</td>
+        </tr>
+        <tr>
+            <td>jb</td>
+            <td>Jump if Below(unsigned)</td>
+            <td>CF=1</td>
+        </tr>
+    </table>
+    <p>These are how if-else and loops are formed at the assembly level.</p>
+
+    <p>Example:</p>
+    <pre><code>cmp eax, 5
+je 0x401080</code></pre>
+    <p>If eax == 5, control jumps to 0x401080.</p>
+
+    <h3>4.3 Loop Instructions: LOOP, LOOPE, LOOPNE</h3>
+    <p>These are specialized instructions for repeating code blocks:</p>
+    <ul>
+        <li>LOOP: Decrements ecx and jumps if ecx != 0.</li>
+        <li>LOOPE / LOOPZ: Jumps if ecx != 0 and Zero Flag = 1.</li>
+        <li>LOOPNE / LOOPNZ: Jumps if ecx != 0 and Zero Flag = 0.</li>
+    </ul>
+    <p>Rare in modern compilers, but malware sometimes uses them in obfuscated logic.</p>
+
+    <h3>4.4 Function Return: RET</h3>
+    <p>RET pops the top value from the stack into EIP, transferring control back to the calling function.
+    It marks the end of a function and is crucial for tracing malware call trees.</p>
+    <p>Example:</p>
+    <pre><code>ret</code></pre>
+
+    <h3>4.5 Call Instructions: CALL</h3>
+    <p>Pushes the current instruction pointer (EIP) to the stack and jumps to the target address.
+    Commonly used to invoke subroutines or APIs.</p>
+    <p>Example:</p>
+    <pre><code>call 0x401000</code></pre>
+    <p>This will:</p>
+    <ol>
+        <li>Push the return address onto the stack.</li>
+        <li>Jump to 0x401000.</li>
+    </ol>
+    <p>In malware, call is often used to invoke API functions dynamically or jump into shellcode.</p>
+
+    <h3>Quick Tip</h3>
+    <p>When analyzing control flow in malware:</p>
+    <ul>
+        <li>Trace jmp and call instructions carefully.</li>
+        <li>Use tools like IDA or Ghidra to visualize flow graphs.</li>
+        <li>Beware of control flow obfuscation — multiple jumps may be used just to confuse you.</li>
+    </ul>
+
+    <h2>5. Strings, APIs & Imports</h2>
+    <p>When you start reversing binaries, you'll quickly realize that the presence of readable strings, imported APIs, and function references can reveal a lot often before even stepping through a single instruction.</p>
+
+    <p>Attackers try to obfuscate, encrypt, or dynamically resolve functions to make our lives harder, but this section is your toolkit for catching them early.</p>
+
+    <h3>5.1 Understanding Strings in Binaries</h3>
+    <p>Strings in disassembled code are human-readable sequences stored in the binary's data section. These can include:</p>
+    <ul>
+        <li>File paths</li>
+        <li>Registry keys</li>
+        <li>Error messages</li>
+        <li>URLs and IP addresses</li>
+        <li>User-agent strings</li>
+        <li>Commands to be executed</li>
+    </ul>
+
+    <h4>Why Strings Matter in Malware Analysis?</h4>
+    <p>Because strings often tell you:</p>
+    <ul>
+        <li>What the malware interacts with</li>
+        <li>Where it connects (network indicators)</li>
+        <li>What system resources or tools does it target</li>
+        <li>What encryption routines or libraries might it use</li>
+    </ul>
+
+    <p>Example:</p>
+    <pre><code>push offset aHttpGoogleCom ; "http://google.com"
+call ds:WinHttpOpen</code></pre>
+    <p>The presence of that URL gives you a clear sign that this sample phones home.</p>
+
+    <p>NOTE: Use tools like strings, Ghidra, or IDA to extract all readable strings and correlate them with context.</p>
+
+    <h3>5.2 APIs and Their Role in Malware</h3>
+    <p>API calls form the bridge between the malware and the operating system. Windows provides thousands of APIs, and malware samples selectively use many for:</p>
+    <ul>
+        <li>File operations (CreateFile, WriteFile)</li>
+        <li>Network communication (WinHttpOpen, send, recv)</li>
+        <li>Process and memory manipulation (CreateProcess, VirtualAlloc, WriteProcessMemory)</li>
+        <li>Persistence and registry edits (RegCreateKeyEx, SetValueEx)</li>
+    </ul>
+    <p>If you understand the APIs used, you understand the behavior of the malware.</p>
+
+    <h4>Commonly Abused API Categories</h4>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>API Examples</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>File I/O</td>
+            <td>CreateFile, WriteFile, DeleteFile</td>
+            <td>Read/write/delete</td>
+        </tr>
+        <tr>
+            <td>Process Management</td>
+            <td>CreateProcess, OpenProcess, TerminateProcess</td>
+            <td>Run or control processes</td>
+        </tr>
+        <tr>
+            <td>Memory Manipulation</td>
+            <td>VirtualAlloc, ReadProcessMemory</td>
+            <td>Shellcode injection, process hollowing</td>
+        </tr>
+        <tr>
+            <td>Networking</td>
+            <td>WSAStartup, connect, send, recv</td>
+            <td>C2 communication, data exfiltration</td>
+        </tr>
+        <tr>
+            <td>Registry Access</td>
+            <td>RegOpenKey, RegSetValue</td>
+            <td>Establish persistence, configuration</td>
+        </tr>
+        <tr>
+            <td>Evasion & Obfuscation</td>
+            <td>IsDebuggerPresent, NtQueryInformationProcess</td>
+            <td>Anti-debugging, stealth</td>
+        </tr>
+    </table>
+
+    <h3>5.3 Import Address Table (IAT)</h3>
+    <p>When a program uses an API, it doesn't store the whole function — just its reference in the Import Address Table (IAT). This table is populated during the program load by the Windows loader, pointing imported functions to their respective addresses in memory.</p>
+
+    <p>You'll often find:</p>
+    <pre><code>call dword ptr [&lt;&KERNEL32.CreateFileA&gt;]</code></pre>
+    <p>That means the binary is using CreateFileA, and it was resolved via the IAT.</p>
+
+    <h3>5.4 Static vs. Dynamic API Resolution</h3>
+    <p>Malware authors know that analysts rely heavily on imports. To evade static detection, many resolve API calls at runtime.</p>
+
+    <p>Dynamic Resolution Example:</p>
+    <pre><code>call GetProcAddress
+call LoadLibraryA</code></pre>
+    <p>The malware may:</p>
+    <ol>
+        <li>Load kernel32.dll dynamically.</li>
+        <li>Use GetProcAddress to retrieve VirtualAlloc.</li>
+        <li>Call it via a register or an indirect pointer.</li>
+    </ol>
+    <p>You may see:</p>
+    <pre><code>call eax</code></pre>
+    <p>With no clear reference, making the analysis harder.</p>
+
+    <p>Tip: Set breakpoints on LoadLibrary and GetProcAddress while debugging to track which APIs are being resolved dynamically.</p>
+
+    <h2>Conclusion</h2>
+    <p>As we draw the curtain on this exploration of x86 disassembly, remember that every binary holds a story, and now you have the keys to translate it. You've seen how registers whisper secrets, how the stack frames map function calls like a subterranean railway, and how control-flow branches carve paths through a program's intent. You've learned to spot the tell-tale strings and API imports that betray a malicious payload, and to unravel obfuscation with patience and precision. Mastering these skills won't happen overnight, but with each disassembled function you decode, you strengthen your ability to see through a malware author's smokescreen.</p>
+
+    <h3>Reference:</h3>
+    <p>Practical Malware Analysis: The hands-on guide to dissecting malicious software [Michael Sikorski, Andrew Honig]</p>
+</body>
+<div class=pagination>
+        <div class=pagination__title><span class=pagination__title-h>Read other posts</span>
+        <hr>
+         </div>
+            <div class=pagination__buttons><span class="button previous"><a
+                        href=../VarsityMentor/index.html><span class=button__icon>←</span>
+                        <span class=button__text>VARSITYMENTOR EXPOSURE CAMP</span></a></span>
+                <span class="button next"><a href=../CTFROOM/index.html><span
+                            class=button__text>CTFROOM INTERNSHIP REPORT</span>
+                        <span class=button__icon>→</span></a></span>
+            </div>
+        </div>
+    </article>
+</div>
+<footer class=footer>
+    
+    </div>   
+</html>
